@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment reconnaître et éviter le phishing — Informa-Technique R</title>
+  <meta name="description" content="Guide complet pour reconnaître les tentatives de phishing (hameçonnage) et protéger vos données personnelles. Exemples réels, signes d'alerte et bonnes pratiques.">
+  <meta name="keywords" content="phishing, hameçonnage, arnaque email, faux site, escroquerie internet, reconnaître phishing, protection phishing, cybersécurité">
+  <link rel="canonical" href="https://informa-technique.fr/eviter-phishing.html">
+  <meta property="og:title" content="Comment reconnaître et éviter le phishing">
+  <meta property="og:description" content="Apprenez à reconnaître les tentatives de phishing et protégez-vous des arnaques en ligne. Guide complet avec exemples et bonnes pratiques.">
+  <meta property="og:url" content="https://informa-technique.fr/eviter-phishing.html">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5419727471233920" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Comment reconnaître et éviter le phishing",
+    "description": "Guide complet pour reconnaître les tentatives de phishing et protéger vos données personnelles.",
+    "author": { "@type": "Organization", "name": "Informa-Technique R" },
+    "publisher": { "@type": "Organization", "name": "Informa-Technique R", "url": "https://informa-technique.fr" },
+    "datePublished": "2026-05-08",
+    "url": "https://informa-technique.fr/eviter-phishing.html"
+  }
+  </script>
+  <style>
+    .article-hero { padding:120px 5% 60px; background:linear-gradient(135deg,#090e1a 0%,#0d1525 100%); text-align:center; border-bottom:1px solid rgba(0,200,255,0.1); }
+    .article-hero .breadcrumb { font-size:13px; color:#8ba3c7; margin-bottom:16px; }
+    .article-hero .breadcrumb a { color:#00c8ff; text-decoration:none; }
+    .article-hero .tag { display:inline-block; background:rgba(255,100,50,0.1); border:1px solid rgba(255,100,50,0.3); color:#ff6432; font-size:12px; padding:4px 14px; border-radius:20px; margin-bottom:18px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; }
+    .article-hero h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,4vw,46px); color:#e8f0fe; margin-bottom:16px; max-width:800px; margin-left:auto; margin-right:auto; }
+    .article-hero h1 span { color:#00c8ff; }
+    .article-hero .meta { font-size:14px; color:#8ba3c7; }
+    .article-body { max-width:860px; margin:0 auto; padding:60px 5% 80px; }
+    .article-body h2 { font-family:'Space Grotesk',sans-serif; font-size:22px; color:#00c8ff; margin:44px 0 14px; padding-left:14px; border-left:3px solid #00c8ff; }
+    .article-body h3 { font-family:'Space Grotesk',sans-serif; font-size:17px; color:#e8f0fe; margin:28px 0 10px; }
+    .article-body p { color:#c5d4ec; line-height:1.85; margin-bottom:16px; font-size:16px; }
+    .article-body ul,.article-body ol { padding-left:28px; margin-bottom:16px; }
+    .article-body ul { list-style:disc; }
+    .article-body ol { list-style:decimal; }
+    .article-body li { color:#c5d4ec; line-height:1.8; margin-bottom:8px; }
+    .tip-box { background:rgba(0,200,255,0.07); border:1px solid rgba(0,200,255,0.25); border-radius:12px; padding:18px 22px; margin:24px 0; }
+    .tip-box strong { color:#00c8ff; }
+    .tip-box p { margin:6px 0 0; color:#c5d4ec; }
+    .warning-box { background:rgba(255,100,50,0.07); border:1px solid rgba(255,100,50,0.3); border-radius:12px; padding:18px 22px; margin:24px 0; }
+    .warning-box strong { color:#ff6432; }
+    .warning-box p { margin:6px 0 0; color:#c5d4ec; }
+    .phish-example { background:#0d1525; border:1px solid rgba(255,100,50,0.3); border-radius:12px; padding:20px 22px; margin:20px 0; }
+    .phish-example .phish-label { font-size:11px; color:#ff6432; text-transform:uppercase; font-weight:600; margin-bottom:10px; letter-spacing:0.5px; }
+    .phish-example .phish-from { font-size:14px; color:#8ba3c7; margin-bottom:6px; }
+    .phish-example .phish-from span { color:#e8f0fe; }
+    .phish-example .phish-subject { font-size:16px; color:#e8f0fe; font-weight:600; margin-bottom:10px; }
+    .phish-example .phish-body { font-size:14px; color:#c5d4ec; line-height:1.7; border-top:1px solid rgba(255,100,50,0.15); padding-top:12px; }
+    .phish-example .phish-body .red { color:#ff6432; font-weight:600; }
+    .checklist { list-style:none !important; padding-left:0 !important; }
+    .checklist li::before { content:"✅ "; }
+    .article-body a { color:#00c8ff; }
+    .back-btn { display:inline-flex; align-items:center; gap:8px; background:rgba(0,200,255,0.1); border:1px solid rgba(0,200,255,0.3); color:#00c8ff; padding:10px 20px; border-radius:10px; font-size:14px; text-decoration:none; margin-top:40px; margin-right:12px; transition:0.2s; }
+    .back-btn:hover { background:rgba(0,200,255,0.2); }
+    .articles-nav { display:flex; gap:14px; flex-wrap:wrap; margin-top:50px; padding-top:36px; border-top:1px solid rgba(0,200,255,0.1); }
+    .art-link { flex:1; min-width:200px; background:rgba(13,21,37,0.8); border:1px solid rgba(0,200,255,0.15); border-radius:12px; padding:18px 20px; color:#e8f0fe; text-decoration:none; transition:0.2s; }
+    .art-link:hover { border-color:rgba(0,200,255,0.4); }
+    .art-link .art-link-label { font-size:11px; color:#8ba3c7; text-transform:uppercase; margin-bottom:6px; }
+    .art-link .art-link-title { font-family:'Space Grotesk',sans-serif; font-size:15px; color:#00c8ff; }
+    footer.art-footer { text-align:center; padding:30px 5%; border-top:1px solid rgba(0,200,255,0.1); color:#8ba3c7; font-size:13px; }
+    footer.art-footer a { color:#00c8ff; }
+  </style>
+</head>
+<body>
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">🛡️</div>
+    <div>
+      <div class="nav-logo-text">Informa-Technique R</div>
+      <div class="nav-logo-sub">Sécurité & Astuces Numériques</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="index.html#categories">Catégories</a></li>
+    <li><a href="index.html#videos">Vidéos</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="article-hero">
+  <p class="breadcrumb"><a href="index.html">Accueil</a> › <a href="index.html#categories">Sécurité</a> › Phishing</p>
+  <div class="tag">🎣 Arnaque & Phishing</div>
+  <h1>Comment reconnaître et <span>éviter le phishing</span></h1>
+  <p class="meta">Par Informa-Technique R &nbsp;·&nbsp; 8 mai 2026 &nbsp;·&nbsp; 9 min de lecture</p>
+</div>
+
+<div class="article-body">
+
+  <p>Le phishing (ou hameçonnage en français) est l'une des cyberattaques les plus répandues dans le monde. En 2025, des milliards d'emails frauduleux ont été envoyés quotidiennement. Le principe est simple : les hackers se font passer pour une entreprise de confiance (votre banque, La Poste, Amazon, impôts.gouv.fr) pour vous voler vos identifiants, vos données bancaires ou installer un virus sur votre appareil. Dans ce guide, apprenez à reconnaître ces arnaques et à vous en protéger.</p>
+
+  <h2>Qu'est-ce que le phishing exactement ?</h2>
+  <p>Le phishing est une technique de manipulation psychologique (ingénierie sociale) où un attaquant se fait passer pour une entité de confiance afin de vous pousser à :</p>
+  <ul>
+    <li>Cliquer sur un lien vers un faux site web (copie parfaite d'un vrai site)</li>
+    <li>Entrer votre login et mot de passe sur ce faux site</li>
+    <li>Télécharger une pièce jointe contenant un virus ou ransomware</li>
+    <li>Communiquer vos informations bancaires ou personnelles</li>
+    <li>Effectuer un virement vers un compte frauduleux</li>
+  </ul>
+  <p>Le phishing se pratique par email, SMS (on parle alors de "smishing"), appel téléphonique ("vishing") ou même sur les réseaux sociaux.</p>
+
+  <h2>Un exemple réel de phishing</h2>
+  <p>Voici un exemple typique d'email de phishing qui circule en France :</p>
+
+  <div class="phish-example">
+    <div class="phish-label">⚠️ Exemple d'email frauduleux</div>
+    <div class="phish-from">De : <span>service-client@amaz0n-france.com</span></div>
+    <div class="phish-subject">🚨 Votre compte Amazon a été suspendu — Action requise</div>
+    <div class="phish-body">
+      Cher client,<br><br>
+      Nous avons détecté une <span class="red">activité suspecte</span> sur votre compte. Pour éviter la suspension définitive, vous devez <span class="red">confirmer vos informations dans les 24 heures</span>.<br><br>
+      ➡️ Cliquez ici pour vérifier votre compte : <span class="red">http://amazon-securite-compte.xyz/verify</span><br><br>
+      <em>L'équipe Amazon</em>
+    </div>
+  </div>
+
+  <p>Cet email contient plusieurs signaux d'alarme que nous allons analyser ci-dessous.</p>
+
+  <h2>Les 10 signes qui trahissent un phishing</h2>
+
+  <h3>1. L'adresse email de l'expéditeur est suspecte</h3>
+  <p>Dans l'exemple ci-dessus, l'adresse est <strong>amaz0n-france.com</strong> — notez le "0" (zéro) à la place du "o". Amazon envoie ses emails depuis <strong>@amazon.fr</strong> ou <strong>@amazon.com</strong> uniquement. Vérifiez toujours l'adresse complète de l'expéditeur, pas seulement le nom affiché.</p>
+
+  <h3>2. La création d'un sentiment d'urgence</h3>
+  <p>"Votre compte sera suspendu dans 24h", "Dernière chance", "Action immédiate requise" — les hackers créent volontairement une pression psychologique pour vous empêcher de réfléchir calmement. Une vraie entreprise ne vous demande jamais d'agir dans l'urgence extrême.</p>
+
+  <h3>3. L'URL du lien est bizarre</h3>
+  <p>Avant de cliquer sur un lien, passez votre souris dessus (sans cliquer) pour voir l'URL réelle en bas de votre navigateur. Des domaines comme <strong>amazon-securite-compte.xyz</strong>, <strong>impots-remboursement.net</strong> ou <strong>paypal-verification.ru</strong> sont des arnaques évidentes.</p>
+  <div class="tip-box">
+    <strong>💡 Règle d'or :</strong>
+    <p>Si vous recevez un email suspect de votre banque, n'utilisez jamais le lien dans l'email. Ouvrez votre navigateur et tapez l'adresse directement vous-même.</p>
+  </div>
+
+  <h3>4. Des fautes d'orthographe et une mise en page approximative</h3>
+  <p>Les emails de phishing contiennent souvent des fautes de français, une mise en page mal alignée ou des logos flous. Les grandes entreprises ont des équipes entières pour leurs communications — leurs emails sont toujours parfaits.</p>
+
+  <h3>5. Une demande d'informations sensibles</h3>
+  <p>Votre banque, Amazon, Google ou l'administration ne vous demanderont JAMAIS par email : votre mot de passe, votre numéro de carte bancaire complet, votre code PIN ou votre numéro de sécurité sociale.</p>
+
+  <h3>6. Une pièce jointe inattendue</h3>
+  <p>Méfiez-vous des pièces jointes non sollicitées, surtout les fichiers <strong>.exe, .zip, .docm, .xlsm</strong>. Ces fichiers peuvent contenir des virus ou ransomwares qui chiffrent tous vos fichiers contre rançon.</p>
+
+  <h3>7. L'email ne vous est pas personnellement adressé</h3>
+  <p>"Cher client", "Bonjour utilisateur" — si votre banque ou Amazon ne vous appelle pas par votre nom, c'est suspect. Les vraies entreprises connaissent votre prénom.</p>
+
+  <h3>8. L'offre est trop belle pour être vraie</h3>
+  <p>"Vous avez gagné un iPhone 15", "Votre colis de 500€ vous attend", "Remboursement impôts de 892€" — ces messages cherchent à vous appâter avec des récompenses inexistantes.</p>
+
+  <h3>9. Le faux site ressemble parfaitement au vrai</h3>
+  <p>Les hackers créent des copies parfaites de sites comme votre banque, PayPal, impots.gouv.fr. La seule différence est l'URL dans la barre d'adresse. Vérifiez toujours que l'URL commence par <strong>https://</strong> et que le nom de domaine est exact.</p>
+
+  <h3>10. Vous recevez un SMS avec un lien</h3>
+  <p>Le smishing (phishing par SMS) est en forte croissance. "Votre colis La Poste est en attente", "Votre abonnement Netflix expire" — ne cliquez jamais sur des liens dans des SMS non sollicités.</p>
+
+  <h2>Que faire si vous avez cliqué sur un lien de phishing ?</h2>
+  <p>Si vous avez cliqué sur un lien suspect, agissez vite :</p>
+  <ol>
+    <li><strong>Ne saisissez rien</strong> — fermez immédiatement la page sans entrer aucune information</li>
+    <li><strong>Changez votre mot de passe</strong> — sur le vrai site de la banque ou service concerné</li>
+    <li><strong>Activez le 2FA</strong> — si ce n'est pas déjà fait</li>
+    <li><strong>Scannez votre appareil</strong> — avec un antivirus (Malwarebytes, Avast)</li>
+    <li><strong>Contactez votre banque</strong> — si vous avez saisi des informations bancaires</li>
+    <li><strong>Signalez l'arnaque</strong> — sur le site <a href="https://www.signal-spam.fr" target="_blank" rel="noopener">signal-spam.fr</a> (pour les emails) ou le <strong>33700</strong> (pour les SMS)</li>
+  </ol>
+  <div class="warning-box">
+    <strong>⚠️ Important :</strong>
+    <p>Si vous avez saisi vos informations bancaires, appelez immédiatement votre banque pour bloquer votre carte et déposer une opposition. Ne perdez pas de temps.</p>
+  </div>
+
+  <h2>Comment se protéger durablement contre le phishing</h2>
+  <ul>
+    <li><strong>Activez le filtre anti-spam</strong> de votre messagerie — Gmail et Outlook bloquent automatiquement de nombreux emails de phishing</li>
+    <li><strong>Utilisez un navigateur à jour</strong> — Chrome, Firefox et Edge ont des filtres anti-phishing intégrés qui bloquent les sites frauduleux connus</li>
+    <li><strong>Installez une extension de sécurité</strong> — Bitdefender TrafficLight ou uBlock Origin avertissent des sites dangereux</li>
+    <li><strong>Méfiez-vous des Wi-Fi publics</strong> — les hackers peuvent intercepter vos communications sur des réseaux non sécurisés</li>
+    <li><strong>Formez votre entourage</strong> — les personnes âgées sont souvent ciblées par les arnaques téléphoniques</li>
+  </ul>
+
+  <h2>Les arnaques les plus courantes en France en 2026</h2>
+  <ul>
+    <li>🏦 <strong>Arnaque bancaire</strong> — faux SMS de votre banque signalant une tentative de connexion suspecte</li>
+    <li>📦 <strong>Arnaque colis</strong> — faux SMS La Poste / Colissimo demandant de payer des frais de douane</li>
+    <li>🏛️ <strong>Arnaque impôts</strong> — faux remboursement fiscal des impôts.gouv.fr</li>
+    <li>💻 <strong>Arnaque support Microsoft</strong> — popup indiquant que votre PC est infecté, avec un numéro à appeler</li>
+    <li>📱 <strong>Arnaque Ameli/CAF</strong> — faux SMS de remboursement de la Sécurité Sociale ou de la CAF</li>
+  </ul>
+
+  <h2>Récapitulatif : les réflexes anti-phishing</h2>
+  <ul class="checklist">
+    <li>Vérifier l'adresse email de l'expéditeur avant tout</li>
+    <li>Ne jamais cliquer sur un lien dans un email urgent</li>
+    <li>Passer la souris sur les liens pour voir la vraie URL</li>
+    <li>Aller directement sur le site officiel plutôt que de cliquer</li>
+    <li>Ne jamais communiquer son mot de passe ou données bancaires par email</li>
+    <li>Signaler les tentatives sur signal-spam.fr ou le 33700</li>
+    <li>Activer le 2FA sur tous les comptes importants</li>
+  </ul>
+
+  <p>Le phishing fonctionne parce qu'il joue sur vos émotions — la peur, l'urgence, la curiosité. En connaissant ces techniques, vous êtes maintenant beaucoup mieux armé pour ne pas tomber dans le piège. Partagez cet article avec vos proches pour les protéger aussi.</p>
+
+  <a href="index.html" class="back-btn">← Retour à l'accueil</a>
+
+  <div class="articles-nav">
+    <a href="securiser-android.html" class="art-link">
+      <div class="art-link-label">← Lire aussi</div>
+      <div class="art-link-title">🔒 Comment sécuriser votre Android</div>
+    </a>
+    <a href="mot-de-passe-fort.html" class="art-link">
+      <div class="art-link-label">← Article précédent</div>
+      <div class="art-link-title">🔑 Comment créer un mot de passe fort</div>
+    </a>
+  </div>
+</div>
+
+<footer class="art-footer">
+  <p>© 2026 <a href="index.html">Informa-Technique R</a> — Tous droits réservés &nbsp;|&nbsp; <a href="politique-de-confidentialite.html">Politique de confidentialité</a></p>
+</footer>
+</body>
+</html>

@@ -101,6 +101,7 @@
     <li><a href="#videos">Vidéos</a></li>
     <li><a href="#reseaux">Réseaux</a></li>
     <li><a href="#apropos">À propos</a></li>
+    <li><a href="#articles">Articles</a></li>
     <li><a href="#services" class="nav-services">Services</a></li>
     <li><a href="#contact" class="nav-cta">Contact</a></li>
     <li><a href="admin/index.html" class="nav-admin" style="display:none">⚙️ Admin</a></li>
@@ -117,6 +118,7 @@
   <a href="#videos" onclick="closeMenu()">▶️ Vidéos</a>
   <a href="#reseaux" onclick="closeMenu()">📱 Réseaux sociaux</a>
   <a href="#apropos" onclick="closeMenu()">👤 À propos</a>
+  <a href="#articles" onclick="closeMenu()">📝 Articles</a>
   <a href="#services" onclick="closeMenu()">📋 Services</a>
   <a href="#contact" onclick="closeMenu()">✉️ Contact</a>
   <a href="admin/index.html" style="display:none">⚙️ Admin</a>
@@ -754,6 +756,44 @@
 </section>
 
 <!-- ══════════════════════════════════════════
+     ARTICLES / GUIDES
+══════════════════════════════════════════ -->
+<section id="articles" style="padding:80px 5%;">
+  <div class="section-header fade-up">
+    <div class="section-tag">Guides</div>
+    <h2 class="section-title">Articles &amp; <span>Guides de sécurité</span></h2>
+    <p class="section-desc">Des tutoriels écrits et détaillés pour apprendre à vous protéger en ligne</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1200px;margin:0 auto;">
+
+    <a href="securiser-android.html" style="display:block;background:rgba(13,21,37,0.8);border:1px solid rgba(0,200,255,0.15);border-radius:16px;padding:28px;text-decoration:none;transition:0.22s;" onmouseover="this.style.borderColor='rgba(0,200,255,0.4)'" onmouseout="this.style.borderColor='rgba(0,200,255,0.15)'">
+      <div style="font-size:36px;margin-bottom:14px;">🔒</div>
+      <div style="font-size:11px;color:#00c8ff;text-transform:uppercase;font-weight:600;letter-spacing:0.5px;margin-bottom:8px;">Sécurité Mobile</div>
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;color:#e8f0fe;margin-bottom:10px;line-height:1.4;">Comment sécuriser votre Android contre les hackers</h3>
+      <p style="color:#8ba3c7;font-size:14px;line-height:1.6;margin-bottom:16px;">Les 9 paramètres essentiels à activer sur Android pour protéger votre téléphone contre les attaques et logiciels malveillants.</p>
+      <span style="color:#00c8ff;font-size:13px;font-weight:600;">Lire l'article →</span>
+    </a>
+
+    <a href="mot-de-passe-fort.html" style="display:block;background:rgba(13,21,37,0.8);border:1px solid rgba(0,200,255,0.15);border-radius:16px;padding:28px;text-decoration:none;transition:0.22s;" onmouseover="this.style.borderColor='rgba(0,200,255,0.4)'" onmouseout="this.style.borderColor='rgba(0,200,255,0.15)'">
+      <div style="font-size:36px;margin-bottom:14px;">🔑</div>
+      <div style="font-size:11px;color:#00c8ff;text-transform:uppercase;font-weight:600;letter-spacing:0.5px;margin-bottom:8px;">Sécurité des comptes</div>
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;color:#e8f0fe;margin-bottom:10px;line-height:1.4;">Comment créer un mot de passe fort et sécurisé</h3>
+      <p style="color:#8ba3c7;font-size:14px;line-height:1.6;margin-bottom:16px;">Guide complet pour créer des mots de passe impossibles à pirater, les gérer avec un gestionnaire et activer la double authentification.</p>
+      <span style="color:#00c8ff;font-size:13px;font-weight:600;">Lire l'article →</span>
+    </a>
+
+    <a href="eviter-phishing.html" style="display:block;background:rgba(13,21,37,0.8);border:1px solid rgba(0,200,255,0.15);border-radius:16px;padding:28px;text-decoration:none;transition:0.22s;" onmouseover="this.style.borderColor='rgba(0,200,255,0.4)'" onmouseout="this.style.borderColor='rgba(0,200,255,0.15)'">
+      <div style="font-size:36px;margin-bottom:14px;">🎣</div>
+      <div style="font-size:11px;color:#ff6432;text-transform:uppercase;font-weight:600;letter-spacing:0.5px;margin-bottom:8px;">Arnaque & Phishing</div>
+      <h3 style="font-family:'Space Grotesk',sans-serif;font-size:18px;color:#e8f0fe;margin-bottom:10px;line-height:1.4;">Comment reconnaître et éviter le phishing</h3>
+      <p style="color:#8ba3c7;font-size:14px;line-height:1.6;margin-bottom:16px;">Les 10 signes qui trahissent un email frauduleux, les arnaques les plus courantes en France et les bons réflexes à adopter.</p>
+      <span style="color:#00c8ff;font-size:13px;font-weight:600;">Lire l'article →</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
      FOOTER
 ══════════════════════════════════════════ -->
 <footer>
@@ -808,7 +848,7 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 Informa-Technique R - Tous droits réservés</span>
-    <span>Fait avec ❤️ pour la communauté numérique</span>
+    <span><a href="politique-de-confidentialite.html" style="color:#8ba3c7;text-decoration:none;">Politique de confidentialité</a> &nbsp;|&nbsp; Fait avec ❤️ pour la communauté numérique</span>
   </div>
 </footer>
 

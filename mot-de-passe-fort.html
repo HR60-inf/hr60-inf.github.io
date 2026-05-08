@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment créer un mot de passe fort et sécurisé — Informa-Technique R</title>
+  <meta name="description" content="Apprenez à créer des mots de passe forts et sécurisés pour protéger vos comptes en ligne. Guide complet avec exemples, gestionnaires de mots de passe et bonnes pratiques.">
+  <meta name="keywords" content="mot de passe fort, créer mot de passe sécurisé, gestionnaire mots de passe, sécurité compte, password manager, mot de passe complexe">
+  <link rel="canonical" href="https://informa-technique.fr/mot-de-passe-fort.html">
+  <meta property="og:title" content="Comment créer un mot de passe fort et sécurisé">
+  <meta property="og:description" content="Guide complet pour créer des mots de passe forts, les gérer efficacement et protéger tous vos comptes en ligne.">
+  <meta property="og:url" content="https://informa-technique.fr/mot-de-passe-fort.html">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5419727471233920" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Comment créer un mot de passe fort et sécurisé",
+    "description": "Guide complet pour créer des mots de passe forts et protéger vos comptes en ligne.",
+    "author": { "@type": "Organization", "name": "Informa-Technique R" },
+    "publisher": { "@type": "Organization", "name": "Informa-Technique R", "url": "https://informa-technique.fr" },
+    "datePublished": "2026-05-08",
+    "url": "https://informa-technique.fr/mot-de-passe-fort.html"
+  }
+  </script>
+  <style>
+    .article-hero { padding: 120px 5% 60px; background: linear-gradient(135deg,#090e1a 0%,#0d1525 100%); text-align:center; border-bottom:1px solid rgba(0,200,255,0.1); }
+    .article-hero .breadcrumb { font-size:13px; color:#8ba3c7; margin-bottom:16px; }
+    .article-hero .breadcrumb a { color:#00c8ff; text-decoration:none; }
+    .article-hero .tag { display:inline-block; background:rgba(0,200,255,0.1); border:1px solid rgba(0,200,255,0.3); color:#00c8ff; font-size:12px; padding:4px 14px; border-radius:20px; margin-bottom:18px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; }
+    .article-hero h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,4vw,46px); color:#e8f0fe; margin-bottom:16px; max-width:800px; margin-left:auto; margin-right:auto; }
+    .article-hero h1 span { color:#00c8ff; }
+    .article-hero .meta { font-size:14px; color:#8ba3c7; }
+    .article-body { max-width:860px; margin:0 auto; padding:60px 5% 80px; }
+    .article-body h2 { font-family:'Space Grotesk',sans-serif; font-size:22px; color:#00c8ff; margin:44px 0 14px; padding-left:14px; border-left:3px solid #00c8ff; }
+    .article-body h3 { font-family:'Space Grotesk',sans-serif; font-size:17px; color:#e8f0fe; margin:28px 0 10px; }
+    .article-body p { color:#c5d4ec; line-height:1.85; margin-bottom:16px; font-size:16px; }
+    .article-body ul,.article-body ol { padding-left:28px; margin-bottom:16px; }
+    .article-body ul { list-style:disc; }
+    .article-body ol { list-style:decimal; }
+    .article-body li { color:#c5d4ec; line-height:1.8; margin-bottom:8px; }
+    .tip-box { background:rgba(0,200,255,0.07); border:1px solid rgba(0,200,255,0.25); border-radius:12px; padding:18px 22px; margin:24px 0; }
+    .tip-box strong { color:#00c8ff; }
+    .tip-box p { margin:0; color:#c5d4ec; }
+    .warning-box { background:rgba(255,100,50,0.07); border:1px solid rgba(255,100,50,0.3); border-radius:12px; padding:18px 22px; margin:24px 0; }
+    .warning-box strong { color:#ff6432; }
+    .warning-box p { margin:0; color:#c5d4ec; }
+    .password-example { background:#0d1525; border:1px solid rgba(0,200,255,0.2); border-radius:10px; padding:14px 20px; font-family:monospace; font-size:18px; color:#00c8ff; text-align:center; margin:20px 0; letter-spacing:2px; }
+    .strength-table { width:100%; border-collapse:collapse; margin:20px 0; }
+    .strength-table th { background:rgba(0,200,255,0.1); color:#00c8ff; padding:10px 14px; text-align:left; font-size:14px; }
+    .strength-table td { padding:10px 14px; border-bottom:1px solid rgba(0,200,255,0.08); color:#c5d4ec; font-size:14px; }
+    .strength-table tr:last-child td { border-bottom:none; }
+    .bad { color:#ff6432; } .ok { color:#ffaa00; } .good { color:#00c8ff; } .great { color:#00ff88; }
+    .checklist { list-style:none !important; padding-left:0 !important; }
+    .checklist li::before { content:"✅ "; }
+    .article-body a { color:#00c8ff; }
+    .back-btn { display:inline-flex; align-items:center; gap:8px; background:rgba(0,200,255,0.1); border:1px solid rgba(0,200,255,0.3); color:#00c8ff; padding:10px 20px; border-radius:10px; font-size:14px; text-decoration:none; margin-top:40px; margin-right:12px; transition:0.2s; }
+    .back-btn:hover { background:rgba(0,200,255,0.2); }
+    .articles-nav { display:flex; gap:14px; flex-wrap:wrap; margin-top:50px; padding-top:36px; border-top:1px solid rgba(0,200,255,0.1); }
+    .art-link { flex:1; min-width:200px; background:rgba(13,21,37,0.8); border:1px solid rgba(0,200,255,0.15); border-radius:12px; padding:18px 20px; color:#e8f0fe; text-decoration:none; transition:0.2s; }
+    .art-link:hover { border-color:rgba(0,200,255,0.4); }
+    .art-link .art-link-label { font-size:11px; color:#8ba3c7; text-transform:uppercase; margin-bottom:6px; }
+    .art-link .art-link-title { font-family:'Space Grotesk',sans-serif; font-size:15px; color:#00c8ff; }
+    footer.art-footer { text-align:center; padding:30px 5%; border-top:1px solid rgba(0,200,255,0.1); color:#8ba3c7; font-size:13px; }
+    footer.art-footer a { color:#00c8ff; }
+  </style>
+</head>
+<body>
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-icon">🛡️</div>
+    <div>
+      <div class="nav-logo-text">Informa-Technique R</div>
+      <div class="nav-logo-sub">Sécurité & Astuces Numériques</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="index.html#categories">Catégories</a></li>
+    <li><a href="index.html#videos">Vidéos</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="article-hero">
+  <p class="breadcrumb"><a href="index.html">Accueil</a> › <a href="index.html#categories">Sécurité</a> › Mot de passe fort</p>
+  <div class="tag">🔑 Sécurité des comptes</div>
+  <h1>Comment créer un <span>mot de passe fort</span> et sécurisé</h1>
+  <p class="meta">Par Informa-Technique R &nbsp;·&nbsp; 8 mai 2026 &nbsp;·&nbsp; 7 min de lecture</p>
+</div>
+
+<div class="article-body">
+
+  <p>Chaque année, des millions de comptes en ligne sont piratés à cause de mots de passe trop faibles ou réutilisés. "123456", "azerty", "motdepasse" — ces mots de passe sont les premiers que les hackers testent. Pourtant, créer un mot de passe vraiment fort est plus simple qu'on ne le pense. Dans ce guide, nous vous expliquons tout ce qu'il faut savoir.</p>
+
+  <h2>Pourquoi un mot de passe faible est si dangereux ?</h2>
+  <p>Les hackers disposent d'outils capables de tester des millions de combinaisons en quelques secondes. C'est ce qu'on appelle une attaque par "force brute" ou par "dictionnaire". Un mot de passe court et simple peut être cassé en moins d'une minute.</p>
+
+  <table class="strength-table">
+    <thead>
+      <tr><th>Mot de passe</th><th>Temps pour le casser</th><th>Niveau</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>azerty</td><td>Moins d'1 seconde</td><td class="bad">❌ Très faible</td></tr>
+      <tr><td>Mohamed1990</td><td>Quelques secondes</td><td class="bad">❌ Faible</td></tr>
+      <tr><td>M0h@med1990</td><td>Quelques heures</td><td class="ok">⚠️ Moyen</td></tr>
+      <tr><td>Tr0p!Facile#2026</td><td>Des années</td><td class="good">✅ Fort</td></tr>
+      <tr><td>K#9mZ!pL2@xQv7nR</td><td>Des millions d'années</td><td class="great">🏆 Très fort</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Les règles d'un mot de passe fort</h2>
+  <p>Un bon mot de passe doit respecter les critères suivants :</p>
+  <ul>
+    <li><strong>Longueur minimale de 12 caractères</strong> — plus c'est long, mieux c'est. Visez 16 caractères idéalement.</li>
+    <li><strong>Mélange de types de caractères</strong> — majuscules, minuscules, chiffres et symboles spéciaux (!@#$%^&*)</li>
+    <li><strong>Pas de mots du dictionnaire</strong> — les attaques par dictionnaire testent tous les mots courants</li>
+    <li><strong>Pas d'informations personnelles</strong> — votre prénom, date de naissance ou nom sont faciles à deviner</li>
+    <li><strong>Unique pour chaque compte</strong> — ne réutilisez jamais le même mot de passe sur plusieurs sites</li>
+  </ul>
+
+  <h2>3 méthodes pour créer un mot de passe fort</h2>
+
+  <h3>Méthode 1 : La phrase secrète transformée</h3>
+  <p>Prenez une phrase facile à retenir et transformez-la en mot de passe en prenant les initiales et en remplaçant certains caractères :</p>
+  <p>Phrase : <em>"Mon chat s'appelle Minou et il a 3 ans !"</em></p>
+  <div class="password-example">Mcs@MeiA3@!</div>
+  <p>Ce mot de passe contient 11 caractères, des majuscules, minuscules, chiffres et symboles. Et vous seul pouvez vous en souvenir !</p>
+
+  <h3>Méthode 2 : Les 4 mots aléatoires</h3>
+  <p>Choisissez 4 mots complètement aléatoires et assemblez-les :</p>
+  <div class="password-example">Soleil-Banane-Nuage-37!</div>
+  <p>Cette méthode crée un mot de passe long (22 caractères), facile à mémoriser mais impossible à deviner.</p>
+
+  <h3>Méthode 3 : Le générateur automatique (recommandé)</h3>
+  <p>La méthode la plus sécurisée est d'utiliser un <strong>gestionnaire de mots de passe</strong> qui génère et stocke automatiquement des mots de passe aléatoires ultra-complexes pour vous.</p>
+
+  <h2>Les meilleurs gestionnaires de mots de passe</h2>
+  <p>Un gestionnaire de mots de passe stocke tous vos mots de passe dans un coffre-fort chiffré. Vous n'avez besoin de retenir qu'un seul mot de passe maître. Voici nos recommandations :</p>
+  <ul>
+    <li><strong>Bitwarden</strong> (gratuit et open source) — le meilleur rapport qualité/prix, disponible sur toutes les plateformes</li>
+    <li><strong>1Password</strong> (payant) — très complet, idéal pour les familles et les professionnels</li>
+    <li><strong>Dashlane</strong> (gratuit limité / payant) — interface très intuitive, recommandé pour les débutants</li>
+    <li><strong>KeePass</strong> (gratuit, open source) — stockage local uniquement, pour les plus avancés</li>
+  </ul>
+  <div class="tip-box">
+    <strong>💡 Notre recommandation :</strong>
+    <p>Commencez avec <strong>Bitwarden</strong> — il est gratuit, open source (son code est vérifié par des experts), disponible sur Android, iOS, Windows, Mac et tous les navigateurs.</p>
+  </div>
+
+  <h2>Les erreurs à ne jamais commettre</h2>
+  <div class="warning-box">
+    <strong>⚠️ Ces erreurs peuvent vous coûter cher :</strong>
+    <p></p>
+  </div>
+  <ul>
+    <li><strong>Réutiliser le même mot de passe</strong> — si un site se fait pirater, tous vos comptes sont compromis</li>
+    <li><strong>Écrire son mot de passe sur un post-it</strong> — visible par n'importe qui dans votre entourage</li>
+    <li><strong>Partager son mot de passe par email ou SMS</strong> — ces canaux ne sont pas sécurisés</li>
+    <li><strong>Utiliser des informations personnelles</strong> — prénom, date de naissance, nom de votre animal</li>
+    <li><strong>Choisir des substitutions évidentes</strong> — remplacer le "a" par "@" ou le "i" par "1" est connu des hackers</li>
+    <li><strong>Garder le même mot de passe pendant des années</strong> — changez-le régulièrement, surtout après une fuite de données</li>
+  </ul>
+
+  <h2>Comment vérifier si vos mots de passe ont été piratés</h2>
+  <p>Des millions d'identifiants sont volés chaque année lors de piratages de sites web. Vous pouvez vérifier si votre email a été compromis sur le site <strong>Have I Been Pwned</strong> (<a href="https://haveibeenpwned.com" target="_blank" rel="noopener">haveibeenpwned.com</a>).</p>
+  <p>Si votre email apparaît dans une fuite de données, changez immédiatement le mot de passe du compte concerné et de tous les comptes où vous utilisez le même mot de passe.</p>
+
+  <h2>L'importance de la double authentification (2FA)</h2>
+  <p>Même avec un mot de passe fort, activez toujours la double authentification sur vos comptes importants. Le 2FA ajoute un second niveau de vérification : même si quelqu'un vole votre mot de passe, il ne peut pas se connecter sans ce second facteur.</p>
+  <p>Les méthodes 2FA par ordre de sécurité :</p>
+  <ol>
+    <li><strong>Clé physique (YubiKey)</strong> — la plus sécurisée, mais coûteuse</li>
+    <li><strong>Application d'authentification (Google Authenticator, Authy)</strong> — recommandée</li>
+    <li><strong>Code par email</strong> — acceptable</li>
+    <li><strong>Code par SMS</strong> — à éviter si possible (risque de SIM swapping)</li>
+  </ol>
+
+  <h2>Récapitulatif : les bonnes pratiques</h2>
+  <ul class="checklist">
+    <li>Minimum 12 caractères (idéalement 16+)</li>
+    <li>Mélange de majuscules, minuscules, chiffres et symboles</li>
+    <li>Un mot de passe unique par compte</li>
+    <li>Utiliser un gestionnaire de mots de passe (Bitwarden)</li>
+    <li>Activer le 2FA sur tous les comptes importants</li>
+    <li>Vérifier si vos emails ont été compromis (haveibeenpwned.com)</li>
+    <li>Changer ses mots de passe après une fuite de données</li>
+  </ul>
+
+  <p>La sécurité de vos comptes en ligne commence par un bon mot de passe. Avec un gestionnaire de mots de passe, vous n'avez plus aucune excuse pour utiliser des mots de passe faibles. Prenez 15 minutes aujourd'hui pour sécuriser vos comptes les plus importants.</p>
+
+  <a href="index.html" class="back-btn">← Retour à l'accueil</a>
+
+  <div class="articles-nav">
+    <a href="securiser-android.html" class="art-link">
+      <div class="art-link-label">← Article précédent</div>
+      <div class="art-link-title">🔒 Comment sécuriser votre Android</div>
+    </a>
+    <a href="eviter-phishing.html" class="art-link">
+      <div class="art-link-label">Article suivant →</div>
+      <div class="art-link-title">🎣 Comment reconnaître et éviter le phishing</div>
+    </a>
+  </div>
+</div>
+
+<footer class="art-footer">
+  <p>© 2026 <a href="index.html">Informa-Technique R</a> — Tous droits réservés &nbsp;|&nbsp; <a href="politique-de-confidentialite.html">Politique de confidentialité</a></p>
+</footer>
+</body>
+</html>
