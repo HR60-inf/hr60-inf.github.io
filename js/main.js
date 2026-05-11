@@ -395,42 +395,36 @@ async function submitForm(e) {
   errorEl.style.display   = 'none';
 
   try {
-    const formData = new FormData();
-    formData.append('fname',   fname);
-    formData.append('lname',   lname);
-    formData.append('email',   email);
-    formData.append('subject', subject);
-    formData.append('message', message);
+    const payload = {
+      access_key: '48625ef3-c9b6-4258-8cf8-d3df4e947396',
+      name:    fname + (lname ? ' ' + lname : ''),
+      email:   email,
+      subject: 'Contact Informa-Technique : ' + (subject || 'Message'),
+      message: message,
+      from_name: 'Informa-Technique Contact'
+    };
 
-    const response = await fetch('php/contact.php', {
+    const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
 
     if (data.success) {
-      successEl.textContent   = '✅ ' + data.message;
+      successEl.textContent   = '✅ Message envoyé avec succès ! Nous vous répondrons rapidement.';
       successEl.style.display = 'block';
       showToast('✅ Message envoyé avec succès !');
       document.getElementById('contactForm').reset();
     } else {
-      throw new Error(data.message || 'Erreur inconnue');
+      throw new Error(data.message || 'Erreur lors de l\'envoi');
     }
 
   } catch (err) {
-    // Fallback si PHP non disponible (mode dev/preview)
-    if (err.message === 'Failed to fetch' || err.message.includes('fetch')) {
-      // Simuler un succès en mode démo
-      successEl.textContent   = '✅ Message enregistré ! (Mode démonstration — configurez PHP pour l\'envoi email)';
-      successEl.style.display = 'block';
-      showToast('✅ Message enregistré !');
-      document.getElementById('contactForm').reset();
-    } else {
-      errorEl.textContent   = '❌ ' + err.message;
-      errorEl.style.display = 'block';
-      showToast('❌ Erreur lors de l\'envoi');
-    }
+    errorEl.textContent   = '❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter directement.';
+    errorEl.style.display = 'block';
+    showToast('❌ Erreur lors de l\'envoi');
   } finally {
     submitBtn.disabled  = false;
     submitBtn.innerHTML = 'Envoyer le message ✉️';
