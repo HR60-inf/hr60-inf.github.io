@@ -14,52 +14,35 @@
     </image:image>
   </url>
 
-  <!-- Section Vidéos / Tutoriels -->
+
+  <!-- Articles / Guides -->
   <url>
-    <loc>https://informa-technique.fr/#videos</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://informa-technique.fr/securiser-android.html</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- Section Catégories -->
   <url>
-    <loc>https://informa-technique.fr/#categories</loc>
-    <lastmod>2026-04-15</lastmod>
+    <loc>https://informa-technique.fr/mot-de-passe-fort.html</loc>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
 
-  <!-- Section Réseaux -->
   <url>
-    <loc>https://informa-technique.fr/#reseaux</loc>
-    <lastmod>2026-04-15</lastmod>
+    <loc>https://informa-technique.fr/eviter-phishing.html</loc>
+    <lastmod>2026-05-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>
 
-  <!-- Section À propos -->
+  <!-- Politique de confidentialité -->
   <url>
-    <loc>https://informa-technique.fr/#apropos</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Section Contact -->
-  <url>
-    <loc>https://informa-technique.fr/#contact</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Section Services -->
-  <url>
-    <loc>https://informa-technique.fr/#services</loc>
-    <lastmod>2026-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://informa-technique.fr/politique-de-confidentialite.html</loc>
+    <lastmod>2026-05-08</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
 
 </urlset>
