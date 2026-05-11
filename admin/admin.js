@@ -1,34 +1,32 @@
 /**
  * INFORMA-TECHNIQUE R — admin.js
  * ─────────────────────────────────────────────────────────
- * Logique du panneau d'administration :
- *  - Authentification par mot de passe (côté client)
- *  - Gestion des vidéos (ajouter, modifier, supprimer)
- *  - Appels API vers php/videos.php
- *  - Affichage des messages de contact
+ * Panneau d'administration complet :
+ *  - Authentification par mot de passe
+ *  - Gestion des vidéos (CRUD + export JSON)
+ *  - Notes & Idées (localStorage)
+ *  - Planning des tutoriels (localStorage)
+ *  - Bandeau d'annonce (localStorage)
  *  - Statistiques
+ *  - Liens rapides
  * ─────────────────────────────────────────────────────────
- *
- * MOT DE PASSE PAR DÉFAUT : admin2025
- * (à changer dans la constante ADMIN_PASSWORD ci-dessous)
- *
- * ⚠️ IMPORTANT : Ce mot de passe est côté client (JavaScript).
- * Pour une sécurité maximale, utilisez uniquement l'API PHP
- * avec le token défini dans php/videos.php (ADMIN_TOKEN).
  */
 
 'use strict';
 
 // ── CONFIGURATION ──────────────────────────────────────
-const ADMIN_PASSWORD = 'admin2025'; // ← Changez ce mot de passe !
-const API_BASE       = '../php/videos.php';
-const ADMIN_TOKEN    = 'informa2025secret'; // Doit correspondre à php/videos.php
+const ADMIN_PASSWORD = 'Fortin!t3-2024';
 const SESSION_KEY    = 'itr_admin_logged';
+// localStorage keys
+const LS_NOTES       = 'itr_notes';
+const LS_PLANNING    = 'itr_planning';
+const LS_ANNONCE     = 'itr_annonce';
 // ────────────────────────────────────────────────────────
 
-// Données locales (fallback si PHP non disponible)
-let localVideos = [];
-let editingId   = null;
+// Données locales
+let localVideos    = [];
+let editingId      = null;
+let annonceColor   = 'linear-gradient(90deg,#00c8ff,#0066ff)';
 
 /* ══════════════════════════════════════════
    AUTHENTIFICATION
@@ -56,23 +54,34 @@ function logout() {
   document.getElementById('adminDashboard').style.display = 'none';
 }
 
+function togglePw() {
+  const inp = document.getElementById('adminPassword');
+  const btn = document.getElementById('eyeBtn');
+  if (inp.type === 'password') {
+    inp.type  = 'text';
+    btn.textContent = '🙈';
+  } else {
+    inp.type  = 'password';
+    btn.textContent = '👁';
+  }
+}
+
 /* ══════════════════════════════════════════
    NAVIGATION TABS
 ══════════════════════════════════════════ */
 function showTab(name, el) {
-  // Désactiver tous les tabs
   document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
 
-  // Activer le tab demandé
   const tab = document.getElementById('tab-' + name);
   if (tab) tab.classList.add('active');
-  if (el) el.classList.add('active');
+  if (el)  el.classList.add('active');
 
-  // Actions spécifiques par tab
   if (name === 'add' && !editingId) resetForm();
-  if (name === 'messages') loadMessages();
-  if (name === 'stats') renderStats();
+  if (name === 'stats')    renderStats();
+  if (name === 'notes')    renderNotes();
+  if (name === 'planning') renderPlanning();
+  if (name === 'annonces') loadAnnonceForm();
 }
 
 /* ══════════════════════════════════════════
@@ -80,7 +89,7 @@ function showTab(name, el) {
 ══════════════════════════════════════════ */
 function initAdmin() {
   loadVideos();
-  loadMessages();
+  renderStats();
 }
 
 /* ══════════════════════════════════════════
@@ -94,17 +103,23 @@ async function loadVideos() {
     showToast('✅ ' + localVideos.length + ' vidéos chargées', 'success');
   } catch {
     localVideos = [];
-    showToast('⚠️ Aucune vidéo trouvée dans data/videos.json', 'error');
+    showToast('⚠️ Aucune vidéo dans data/videos.json', 'error');
   }
   renderAdminVideos();
+  updateVideoBadge();
   renderStats();
+}
+
+function updateVideoBadge() {
+  const badge = document.getElementById('videoBadge');
+  if (badge) badge.textContent = localVideos.length > 0 ? localVideos.length : '';
 }
 
 /* ══════════════════════════════════════════
    RENDU TABLE VIDÉOS
 ══════════════════════════════════════════ */
 function renderAdminVideos() {
-  const search = document.getElementById('adminSearch')?.value.toLowerCase() || '';
+  const search    = document.getElementById('adminSearch')?.value.toLowerCase() || '';
   const catFilter = document.getElementById('adminCatFilter')?.value || '';
 
   let filtered = localVideos.filter(v => {
@@ -116,10 +131,6 @@ function renderAdminVideos() {
   });
 
   const tbody = document.getElementById('adminTableBody');
-  const count = document.getElementById('adminVideoCount');
-
-  if (count) count.textContent = filtered.length + ' tutoriel' + (filtered.length > 1 ? 's' : '');
-
   const catNames = {
     securite: '🔒 Sécurité', navigateur: '🌐 Navigateur',
     crypto: '💰 Crypto', demarches: '📋 Démarches', astuces: '💡 Astuces'
@@ -147,7 +158,7 @@ function renderAdminVideos() {
       <td>
         <div class="table-actions">
           <button class="btn-edit" onclick="editVideo(${v.id})">✏️ Modifier</button>
-          <button class="btn-delete" onclick="deleteVideo(${v.id}, '${escHTML(v.title).slice(0,30)}...')">🗑️ Suppr.</button>
+          <button class="btn-delete" onclick="deleteVideo(${v.id}, '${escHTML(v.title).slice(0,30)}')">🗑️ Suppr.</button>
         </div>
       </td>
     </tr>
@@ -155,7 +166,7 @@ function renderAdminVideos() {
 }
 
 /* ══════════════════════════════════════════
-   AJOUTER / MODIFIER UNE VIDÉO
+   MODIFIER UNE VIDÉO
 ══════════════════════════════════════════ */
 function editVideo(id) {
   const v = localVideos.find(x => x.id === id);
@@ -163,25 +174,27 @@ function editVideo(id) {
 
   editingId = id;
   document.getElementById('formTitle').textContent = '✏️ Modifier la vidéo';
-  document.getElementById('editId').value = id;
-
-  document.getElementById('vTitle').value     = v.title || '';
-  document.getElementById('vCategory').value  = v.category || '';
-  document.getElementById('vPlatform').value  = v.platform || '';
-  document.getElementById('vEmoji').value     = v.emoji || '';
-  document.getElementById('vViews').value     = v.views || '';
-  document.getElementById('vDate').value      = v.date || '';
-  document.getElementById('vThumbnail').value = v.thumbnail || '';
-  document.getElementById('vDesc').value      = v.desc || '';
-  document.getElementById('vTags').value      = (v.tags || []).join(', ');
-  document.getElementById('vYoutube').value   = v.links?.youtube  || '';
-  document.getElementById('vFacebook').value  = v.links?.facebook || '';
-  document.getElementById('vTiktok').value    = v.links?.tiktok   || '';
+  document.getElementById('editId').value          = id;
+  document.getElementById('vTitle').value          = v.title || '';
+  document.getElementById('vCategory').value       = v.category || '';
+  document.getElementById('vPlatform').value       = v.platform || '';
+  document.getElementById('vEmoji').value          = v.emoji || '';
+  document.getElementById('vViews').value          = v.views || '';
+  document.getElementById('vDate').value           = v.date || '';
+  document.getElementById('vThumbnail').value      = v.thumbnail || '';
+  document.getElementById('vDesc').value           = v.desc || '';
+  document.getElementById('vTags').value           = (v.tags || []).join(', ');
+  document.getElementById('vYoutube').value        = v.links?.youtube  || '';
+  document.getElementById('vFacebook').value       = v.links?.facebook || '';
+  document.getElementById('vTiktok').value         = v.links?.tiktok   || '';
 
   showTab('add', document.querySelector('.sidebar-link[onclick*="add"]'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ══════════════════════════════════════════
+   SAUVEGARDER UNE VIDÉO
+══════════════════════════════════════════ */
 async function saveVideo(e) {
   e.preventDefault();
 
@@ -220,6 +233,7 @@ async function saveVideo(e) {
     }
 
     renderAdminVideos();
+    updateVideoBadge();
     renderStats();
 
     const msg = editingId ? '✅ Vidéo modifiée !' : '✅ Vidéo ajoutée !';
@@ -228,7 +242,6 @@ async function saveVideo(e) {
     feedback.style.display = 'block';
     showToast(msg, 'success');
 
-    // Générer et télécharger le fichier videos.json mis à jour
     exportVideosJSON();
 
     setTimeout(() => {
@@ -247,7 +260,23 @@ async function saveVideo(e) {
   }
 }
 
-/** Exporter videos.json et afficher instructions GitHub */
+/* ══════════════════════════════════════════
+   SUPPRIMER UNE VIDÉO
+══════════════════════════════════════════ */
+async function deleteVideo(id, title) {
+  if (!confirm(`⚠️ Supprimer cette vidéo ?\n\n"${title}"\n\nCette action est irréversible.`)) return;
+
+  localVideos = localVideos.filter(v => v.id !== id);
+  renderAdminVideos();
+  updateVideoBadge();
+  renderStats();
+  showToast('✅ Vidéo supprimée !', 'success');
+  exportVideosJSON();
+}
+
+/* ══════════════════════════════════════════
+   EXPORT JSON + INSTRUCTIONS GITHUB
+══════════════════════════════════════════ */
 function exportVideosJSON() {
   const json = JSON.stringify(localVideos, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
@@ -257,8 +286,6 @@ function exportVideosJSON() {
   a.download = 'videos.json';
   a.click();
   URL.revokeObjectURL(url);
-
-  // Afficher bannière instructions
   showUploadBanner();
 }
 
@@ -284,7 +311,7 @@ function showUploadBanner() {
       Pour mettre à jour le site en ligne, uploade ce fichier sur GitHub :
     </div>
     <ol style="padding-left:18px;line-height:2;color:#e8f0fe">
-      <li>Va sur <strong>github.com</strong> → dépôt <strong>informa-technique</strong></li>
+      <li>Va sur <strong>github.com</strong> → dépôt <strong>hr60-inf.github.io</strong></li>
       <li>Ouvre le dossier <strong>data/</strong></li>
       <li>Clique <strong>"Add file" → "Upload files"</strong></li>
       <li>Uploade <strong>videos.json</strong> → Commit</li>
@@ -308,66 +335,220 @@ function resetForm() {
 }
 
 /* ══════════════════════════════════════════
-   SUPPRIMER UNE VIDÉO
+   NOTES & IDÉES
 ══════════════════════════════════════════ */
-async function deleteVideo(id, title) {
-  if (!confirm(`⚠️ Supprimer cette vidéo ?\n\n"${title}"\n\nCette action est irréversible.`)) return;
+function getNotes() {
+  try { return JSON.parse(localStorage.getItem(LS_NOTES)) || []; }
+  catch { return []; }
+}
 
-  localVideos = localVideos.filter(v => v.id !== id);
-  renderAdminVideos();
-  renderStats();
-  showToast('✅ Vidéo supprimée !', 'success');
-  exportVideosJSON();
+function saveNotes(notes) {
+  localStorage.setItem(LS_NOTES, JSON.stringify(notes));
+}
+
+function addNote() {
+  const notes = getNotes();
+  const newNote = {
+    id:      Date.now(),
+    text:    '',
+    color:   'default',
+    created: new Date().toLocaleDateString('fr-FR')
+  };
+  notes.unshift(newNote);
+  saveNotes(notes);
+  renderNotes();
+  // focus sur la nouvelle note
+  setTimeout(() => {
+    const ta = document.querySelector(`[data-note-id="${newNote.id}"] textarea`);
+    if (ta) ta.focus();
+  }, 50);
+}
+
+function updateNote(id, text) {
+  const notes = getNotes();
+  const idx   = notes.findIndex(n => n.id === id);
+  if (idx !== -1) { notes[idx].text = text; saveNotes(notes); }
+}
+
+function deleteNote(id) {
+  if (!confirm('Supprimer cette note ?')) return;
+  const notes = getNotes().filter(n => n.id !== id);
+  saveNotes(notes);
+  renderNotes();
+}
+
+function setNoteColor(id, color) {
+  const notes = getNotes();
+  const idx   = notes.findIndex(n => n.id === id);
+  if (idx !== -1) { notes[idx].color = color; saveNotes(notes); renderNotes(); }
+}
+
+function renderNotes() {
+  const container = document.getElementById('notesList');
+  if (!container) return;
+
+  const notes = getNotes();
+  if (notes.length === 0) {
+    container.innerHTML = `<div class="empty-state">📝 Aucune note pour l'instant.<br><small>Cliquez sur "+ Nouvelle note" pour commencer.</small></div>`;
+    return;
+  }
+
+  const colorMap = {
+    default: 'rgba(13,21,37,0.9)',
+    blue:    'rgba(0,200,255,0.08)',
+    green:   'rgba(0,200,100,0.08)',
+    yellow:  'rgba(245,158,11,0.1)',
+    red:     'rgba(255,68,68,0.08)',
+    purple:  'rgba(124,58,237,0.1)',
+  };
+
+  container.innerHTML = notes.map(n => `
+    <div class="note-card" data-note-id="${n.id}" style="background:${colorMap[n.color] || colorMap.default}">
+      <div class="note-top">
+        <span class="note-date">${n.created}</span>
+        <div class="note-actions">
+          <div class="note-colors">
+            ${['default','blue','green','yellow','red','purple'].map(c =>
+              `<button onclick="setNoteColor(${n.id},'${c}')" class="nc-dot nc-${c}" title="${c}" ${n.color===c?'style="outline:2px solid #fff"':''}></button>`
+            ).join('')}
+          </div>
+          <button onclick="deleteNote(${n.id})" class="btn-note-del" title="Supprimer">🗑️</button>
+        </div>
+      </div>
+      <textarea
+        class="note-textarea"
+        placeholder="Écrivez votre idée ici..."
+        oninput="updateNote(${n.id}, this.value)"
+        onblur="updateNote(${n.id}, this.value)"
+      >${escHTML(n.text)}</textarea>
+    </div>
+  `).join('');
 }
 
 /* ══════════════════════════════════════════
-   MESSAGES DE CONTACT
+   PLANNING
 ══════════════════════════════════════════ */
-async function loadMessages() {
-  const list = document.getElementById('messagesList');
-  const badge = document.getElementById('msgBadge');
+function getPlanning() {
+  try { return JSON.parse(localStorage.getItem(LS_PLANNING)) || []; }
+  catch { return []; }
+}
 
-  list.innerHTML = '<p class="empty-state">⏳ Chargement...</p>';
+function savePlanning(items) {
+  localStorage.setItem(LS_PLANNING, JSON.stringify(items));
+}
 
-  try {
-    const response = await fetch('../data/messages.json?t=' + Date.now());
-    if (!response.ok) throw new Error('Fichier non trouvé');
+function addPlanItem() {
+  const title = prompt('Titre du tutoriel à planifier :');
+  if (!title || !title.trim()) return;
 
-    const messages = await response.json();
+  const date = prompt('Date prévue (ex: 20/05/2026) :') || '';
+  const items = getPlanning();
+  items.push({
+    id:     Date.now(),
+    title:  title.trim(),
+    date:   date.trim(),
+    done:   false,
+    status: 'planifié'
+  });
+  savePlanning(items);
+  renderPlanning();
+  showToast('✅ Tutoriel ajouté au planning !', 'success');
+}
 
-    if (!messages || messages.length === 0) {
-      list.innerHTML = '<p class="empty-state">📭 Aucun message reçu pour l\'instant.</p>';
-      if (badge) badge.textContent = '';
-      return;
-    }
-
-    // Afficher les plus récents en premier
-    const sorted = [...messages].reverse();
-    const unread = sorted.filter(m => !m.lu).length;
-    if (badge) badge.textContent = unread > 0 ? unread : '';
-
-    list.innerHTML = sorted.map(m => `
-      <div class="message-card ${m.lu ? '' : 'unread'}">
-        <div class="message-header">
-          <div>
-            <div class="message-from">${escHTML(m.nom_complet || m.fname || 'Anonyme')}</div>
-            <div class="message-email">${escHTML(m.email)}</div>
-          </div>
-          <div class="message-date">${formatDateTime(m.date)}</div>
-        </div>
-        <div class="message-subject">${escHTML(m.sujet_label || m.subject || 'Contact')}</div>
-        <div class="message-body">${escHTML(m.message)}</div>
-      </div>
-    `).join('');
-
-  } catch {
-    list.innerHTML = `
-      <p class="empty-state">
-        📁 Aucun message trouvé.<br>
-        <small style="margin-top:8px;display:block">Les messages seront sauvegardés dans <code>data/messages.json</code> quand quelqu'un remplira le formulaire de contact.</small>
-      </p>`;
-    if (badge) badge.textContent = '';
+function togglePlanDone(id) {
+  const items = getPlanning();
+  const idx   = items.findIndex(i => i.id === id);
+  if (idx !== -1) {
+    items[idx].done   = !items[idx].done;
+    items[idx].status = items[idx].done ? 'publié' : 'planifié';
+    savePlanning(items);
+    renderPlanning();
   }
+}
+
+function deletePlanItem(id) {
+  if (!confirm('Supprimer cet élément du planning ?')) return;
+  savePlanning(getPlanning().filter(i => i.id !== id));
+  renderPlanning();
+}
+
+function renderPlanning() {
+  const container = document.getElementById('planningList');
+  if (!container) return;
+
+  const items = getPlanning();
+  if (items.length === 0) {
+    container.innerHTML = `<div class="empty-state">📅 Aucun tutoriel planifié.<br><small>Cliquez sur "+ Ajouter" pour planifier un prochain tutoriel.</small></div>`;
+    return;
+  }
+
+  // Trier : non-faits d'abord
+  const sorted = [...items].sort((a, b) => (a.done ? 1 : 0) - (b.done ? 1 : 0));
+
+  container.innerHTML = sorted.map(item => `
+    <div class="plan-item ${item.done ? 'done' : ''}">
+      <label class="plan-check">
+        <input type="checkbox" ${item.done ? 'checked' : ''} onchange="togglePlanDone(${item.id})">
+        <span class="plan-checkmark"></span>
+      </label>
+      <div class="plan-info">
+        <div class="plan-title">${escHTML(item.title)}</div>
+        ${item.date ? `<div class="plan-date">📅 ${escHTML(item.date)}</div>` : ''}
+      </div>
+      <span class="plan-status ${item.done ? 'ps-done' : 'ps-todo'}">${item.status}</span>
+      <button onclick="deletePlanItem(${item.id})" class="btn-note-del" title="Supprimer">🗑️</button>
+    </div>
+  `).join('');
+}
+
+/* ══════════════════════════════════════════
+   ANNONCES
+══════════════════════════════════════════ */
+function setAnnonceColor(gradient) {
+  annonceColor = gradient;
+  // Mettre à jour le préview si visible
+  const preview = document.getElementById('annoncePreview');
+  if (preview && preview.style.display !== 'none') {
+    preview.style.background = annonceColor;
+  }
+  showToast('🎨 Couleur sélectionnée', 'success');
+}
+
+function saveAnnonce() {
+  const text   = document.getElementById('annonceText').value.trim();
+  const link   = document.getElementById('annonceLink').value.trim();
+  const active = document.getElementById('annonceActive').checked;
+
+  if (!text) { showToast('⚠️ Entrez un texte pour l\'annonce', 'error'); return; }
+
+  const data = { text, link, active, color: annonceColor };
+  localStorage.setItem(LS_ANNONCE, JSON.stringify(data));
+  showToast('✅ Annonce enregistrée !', 'success');
+}
+
+function previewAnnonce() {
+  const text    = document.getElementById('annonceText').value.trim();
+  const link    = document.getElementById('annonceLink').value.trim();
+  const preview = document.getElementById('annoncePreview');
+
+  if (!text) { showToast('⚠️ Entrez un texte à prévisualiser', 'error'); return; }
+
+  preview.style.background = annonceColor;
+  preview.style.display    = 'block';
+  preview.innerHTML = link
+    ? `${escHTML(text)} <span style="opacity:.7;font-size:12px">→ ${escHTML(link)}</span>`
+    : escHTML(text);
+}
+
+function loadAnnonceForm() {
+  try {
+    const data = JSON.parse(localStorage.getItem(LS_ANNONCE));
+    if (!data) return;
+    document.getElementById('annonceText').value   = data.text || '';
+    document.getElementById('annonceLink').value   = data.link || '';
+    document.getElementById('annonceActive').checked = !!data.active;
+    if (data.color) annonceColor = data.color;
+  } catch {}
 }
 
 /* ══════════════════════════════════════════
@@ -377,17 +558,18 @@ function renderStats() {
   const statsGrid = document.getElementById('statsGrid');
   const catProg   = document.getElementById('categoryProgress');
   const platProg  = document.getElementById('platformProgress');
-
   if (!statsGrid) return;
 
   const total = localVideos.length;
+  const notes   = getNotes().length;
+  const planning = getPlanning().filter(i => !i.done).length;
 
   const catCounts = {
-    securite:  localVideos.filter(v => v.category === 'securite').length,
-    navigateur:localVideos.filter(v => v.category === 'navigateur').length,
-    crypto:    localVideos.filter(v => v.category === 'crypto').length,
-    demarches: localVideos.filter(v => v.category === 'demarches').length,
-    astuces:   localVideos.filter(v => v.category === 'astuces').length,
+    securite:   localVideos.filter(v => v.category === 'securite').length,
+    navigateur: localVideos.filter(v => v.category === 'navigateur').length,
+    crypto:     localVideos.filter(v => v.category === 'crypto').length,
+    demarches:  localVideos.filter(v => v.category === 'demarches').length,
+    astuces:    localVideos.filter(v => v.category === 'astuces').length,
   };
 
   const platCounts = {
@@ -396,35 +578,39 @@ function renderStats() {
     tiktok:   localVideos.filter(v => v.platform === 'tiktok').length,
   };
 
-  // Stats globales
   statsGrid.innerHTML = `
-    <div class="stat-card">
+    <div class="stat-card sc-blue">
+      <div class="stat-icon">🎬</div>
       <div class="stat-num">${total}</div>
       <div class="stat-label">Tutoriels total</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num">${catCounts.securite}</div>
-      <div class="stat-label">🔒 Sécurité</div>
+    <div class="stat-card sc-green">
+      <div class="stat-icon">▶️</div>
+      <div class="stat-num">${platCounts.youtube}</div>
+      <div class="stat-label">YouTube</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num">${catCounts.crypto}</div>
-      <div class="stat-label">💰 Crypto</div>
+    <div class="stat-card sc-fb">
+      <div class="stat-icon">📘</div>
+      <div class="stat-num">${platCounts.facebook}</div>
+      <div class="stat-label">Facebook</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num">${catCounts.demarches}</div>
-      <div class="stat-label">📋 Démarches</div>
+    <div class="stat-card sc-tt">
+      <div class="stat-icon">🎵</div>
+      <div class="stat-num">${platCounts.tiktok}</div>
+      <div class="stat-label">TikTok</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num">${catCounts.astuces}</div>
-      <div class="stat-label">💡 Astuces</div>
+    <div class="stat-card sc-yellow">
+      <div class="stat-icon">📝</div>
+      <div class="stat-num">${notes}</div>
+      <div class="stat-label">Notes enregistrées</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num">${catCounts.navigateur}</div>
-      <div class="stat-label">🌐 Navigateur</div>
+    <div class="stat-card sc-purple">
+      <div class="stat-icon">📅</div>
+      <div class="stat-num">${planning}</div>
+      <div class="stat-label">Tutoriels à publier</div>
     </div>
   `;
 
-  // Barres de progression catégories
   const catItems = [
     ['🔒 Sécurité',   catCounts.securite],
     ['🌐 Navigateur', catCounts.navigateur],
@@ -445,10 +631,9 @@ function renderStats() {
     `).join('');
   }
 
-  // Barres de progression plateformes
   const platItems = [
-    ['📺 YouTube',  platCounts.youtube],
-    ['👤 Facebook', platCounts.facebook],
+    ['▶️ YouTube',  platCounts.youtube],
+    ['📘 Facebook', platCounts.facebook],
     ['🎵 TikTok',  platCounts.tiktok],
   ];
 
@@ -466,7 +651,7 @@ function renderStats() {
 }
 
 /* ══════════════════════════════════════════
-   TOAST ADMIN
+   TOAST
 ══════════════════════════════════════════ */
 let toastTimer = null;
 
@@ -493,32 +678,19 @@ function escHTML(str) {
 
 function formatDate() {
   const d = new Date();
-  return `le ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-}
-
-function formatDateTime(dateStr) {
-  if (!dateStr) return '—';
-  try {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('fr-FR', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
-    });
-  } catch { return dateStr; }
+  return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
 }
 
 /* ══════════════════════════════════════════
-   INITIALISATION
+   INIT AU CHARGEMENT
 ══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  // Vérifier si déjà connecté (session)
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
     document.getElementById('loginPage').style.display      = 'none';
     document.getElementById('adminDashboard').style.display = 'flex';
     initAdmin();
   }
 
-  // Focus automatique sur le champ mot de passe
   const pwField = document.getElementById('adminPassword');
   if (pwField) pwField.focus();
 });

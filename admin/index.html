@@ -16,25 +16,20 @@
 ══════════════════════════════════ -->
 <div class="login-page" id="loginPage">
   <div class="login-box">
-    <div class="login-logo">⚙️</div>
+    <div class="login-logo">🛡️</div>
     <h1 class="login-title">Informa-Technique R</h1>
     <p class="login-subtitle">Panneau d'administration</p>
-
     <form class="login-form" onsubmit="login(event)">
       <div class="login-field">
         <label for="adminPassword">Mot de passe</label>
-        <input
-          type="password"
-          id="adminPassword"
-          placeholder="••••••••"
-          autocomplete="current-password"
-          required
-        >
+        <div style="position:relative">
+          <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="current-password" required>
+          <button type="button" onclick="togglePw()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px" id="eyeBtn">👁</button>
+        </div>
       </div>
       <p class="login-error" id="loginError"></p>
       <button type="submit" class="login-btn">Se connecter</button>
     </form>
-
     <a href="../index.html" class="back-site">← Retour au site</a>
   </div>
 </div>
@@ -45,91 +40,83 @@
 <div class="admin-dashboard" id="adminDashboard" style="display:none">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="sidebar-title">📡 ITR Admin</div>
+      <div class="sidebar-title">🛡️ ITR Admin</div>
       <div class="sidebar-sub">Informa-Technique R</div>
     </div>
 
     <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Contenu</div>
       <a class="sidebar-link active" onclick="showTab('videos', this)">
-        🎬 Vidéos
-        <span class="badge" id="msgBadge" style="display:none">0</span>
+        <span class="sl-icon">🎬</span> Vidéos
+        <span class="badge" id="videoBadge">0</span>
       </a>
       <a class="sidebar-link" onclick="showTab('add', this)">
-        ➕ Ajouter
+        <span class="sl-icon">➕</span> Ajouter
       </a>
-      <a class="sidebar-link" onclick="showTab('messages', this)">
-        ✉️ Messages
+
+      <div class="sidebar-section-label">Outils</div>
+      <a class="sidebar-link" onclick="showTab('notes', this)">
+        <span class="sl-icon">📝</span> Notes & Idées
       </a>
+      <a class="sidebar-link" onclick="showTab('planning', this)">
+        <span class="sl-icon">📅</span> Planning
+      </a>
+      <a class="sidebar-link" onclick="showTab('annonces', this)">
+        <span class="sl-icon">📢</span> Annonces
+      </a>
+
+      <div class="sidebar-section-label">Analyse</div>
       <a class="sidebar-link" onclick="showTab('stats', this)">
-        📊 Statistiques
+        <span class="sl-icon">📊</span> Statistiques
+      </a>
+      <a class="sidebar-link" onclick="showTab('liens', this)">
+        <span class="sl-icon">🔗</span> Liens rapides
       </a>
     </nav>
 
     <div class="sidebar-footer">
-      <a class="sidebar-link logout-btn" onclick="logout()">🚪 Déconnexion</a>
-      <a href="../index.html" class="back-site" style="text-align:center;display:block;margin-top:8px">← Voir le site</a>
+      <div class="sidebar-user">
+        <div class="su-avatar">IR</div>
+        <div>
+          <div style="font-size:13px;font-weight:600">Admin ITR</div>
+          <div style="font-size:11px;color:var(--muted)">contact@informa-technique.fr</div>
+        </div>
+      </div>
+      <a class="sidebar-link logout-btn" onclick="logout()"><span class="sl-icon">🚪</span> Déconnexion</a>
+      <a href="../index.html" class="back-site" style="text-align:center;display:block;margin-top:8px;font-size:13px;color:var(--muted)">← Voir le site</a>
     </div>
   </aside>
 
   <!-- MAIN CONTENT -->
   <main class="admin-main">
-
-    <!-- Toast notification -->
     <div class="admin-toast" id="adminToast"></div>
 
     <!-- ── TAB : LISTE DES VIDÉOS ── -->
     <div class="admin-tab active" id="tab-videos">
       <div class="tab-header">
-        <h2 class="tab-title">
-          🎬 Gestion des vidéos
-          <span id="adminVideoCount" style="background:var(--accent);color:#000;padding:2px 10px;border-radius:20px;font-size:13px;font-weight:700;margin-left:8px">0</span>
-        </h2>
-        <div class="tab-actions">
-          <button class="btn-add" onclick="showTab('add', document.querySelector('.sidebar-link[onclick*=\'add\']'))">
-            + Ajouter une vidéo
-          </button>
-        </div>
+        <h2 class="tab-title">🎬 Gestion des vidéos</h2>
+        <button class="btn-add" onclick="showTab('add', document.querySelector('.sidebar-link[onclick*=\'add\']'))">+ Ajouter</button>
       </div>
-
       <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
-        <input
-          type="text"
-          id="adminSearch"
-          class="admin-search"
-          placeholder="🔍 Rechercher une vidéo..."
-          oninput="filterVideos()"
-          style="flex:1;min-width:200px"
-        >
-        <select id="adminCatFilter" class="admin-select" onchange="filterVideos()" style="min-width:180px">
+        <input type="text" id="adminSearch" class="admin-input" placeholder="🔍 Rechercher..." oninput="renderAdminVideos()" style="flex:1;min-width:200px">
+        <select id="adminCatFilter" class="admin-select" onchange="renderAdminVideos()" style="min-width:180px">
           <option value="">Toutes les catégories</option>
-          <option value="informatique">💻 Informatique</option>
-          <option value="programmation">🧑‍💻 Programmation</option>
-          <option value="reseaux">🌐 Réseaux</option>
           <option value="securite">🔒 Sécurité</option>
-          <option value="ia">🤖 Intelligence Artificielle</option>
-          <option value="autres">📦 Autres</option>
+          <option value="navigateur">🌐 Navigateur</option>
+          <option value="crypto">💰 Crypto</option>
+          <option value="demarches">📋 Démarches</option>
+          <option value="astuces">💡 Astuces</option>
         </select>
       </div>
-
       <div class="admin-table-wrapper">
         <table class="admin-table">
           <thead>
-            <tr>
-              <th>Miniature</th>
-              <th>Titre</th>
-              <th>Catégorie</th>
-              <th>Plateforme</th>
-              <th>Vues</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
+            <tr><th>ID</th><th>Titre</th><th>Catégorie</th><th>Plateforme</th><th>Vues</th><th>Actions</th></tr>
           </thead>
           <tbody id="adminTableBody">
-            <tr>
-              <td colspan="7" class="empty-table">Chargement des vidéos...</td>
-            </tr>
+            <tr><td colspan="6" class="empty-table">Chargement...</td></tr>
           </tbody>
         </table>
       </div>
@@ -140,87 +127,41 @@
       <div class="tab-header">
         <h2 class="tab-title" id="formTitle">➕ Ajouter une vidéo</h2>
       </div>
-
       <form class="video-form" id="videoForm" onsubmit="saveVideo(event)">
         <input type="hidden" id="editId">
-
         <div class="form-grid">
-          <div class="form-group">
-            <label>Titre *</label>
-            <input type="text" id="vTitle" class="admin-input" placeholder="Titre de la vidéo" required>
-          </div>
-
-          <div class="form-group">
-            <label>Emoji</label>
-            <input type="text" id="vEmoji" class="admin-input" placeholder="🎬" maxlength="4">
-          </div>
-
-          <div class="form-group full-width">
-            <label>Description</label>
-            <textarea id="vDesc" class="admin-textarea" placeholder="Description de la vidéo..." rows="3"></textarea>
-          </div>
-
+          <div class="form-group"><label>Titre *</label><input type="text" id="vTitle" class="admin-input" placeholder="Titre de la vidéo" required></div>
+          <div class="form-group"><label>Emoji</label><input type="text" id="vEmoji" class="admin-input" placeholder="🎬" maxlength="4"></div>
+          <div class="form-group full-width"><label>Description</label><textarea id="vDesc" class="admin-textarea" placeholder="Description..." rows="3"></textarea></div>
           <div class="form-group">
             <label>Catégorie *</label>
             <select id="vCategory" class="admin-select" required>
               <option value="">-- Choisir --</option>
-              <option value="informatique">💻 Informatique</option>
-              <option value="programmation">🧑‍💻 Programmation</option>
-              <option value="reseaux">🌐 Réseaux</option>
               <option value="securite">🔒 Sécurité</option>
-              <option value="ia">🤖 Intelligence Artificielle</option>
-              <option value="autres">📦 Autres</option>
+              <option value="navigateur">🌐 Navigateur</option>
+              <option value="crypto">💰 Crypto</option>
+              <option value="demarches">📋 Démarches</option>
+              <option value="astuces">💡 Astuces</option>
             </select>
           </div>
-
           <div class="form-group">
             <label>Plateforme *</label>
             <select id="vPlatform" class="admin-select" required>
               <option value="">-- Choisir --</option>
               <option value="youtube">▶️ YouTube</option>
-              <option value="tiktok">🎵 TikTok</option>
               <option value="facebook">📘 Facebook</option>
+              <option value="tiktok">🎵 TikTok</option>
             </select>
           </div>
-
-          <div class="form-group">
-            <label>URL YouTube</label>
-            <input type="url" id="vYoutube" class="admin-input" placeholder="https://youtube.com/watch?v=...">
-          </div>
-
-          <div class="form-group">
-            <label>URL TikTok</label>
-            <input type="url" id="vTiktok" class="admin-input" placeholder="https://tiktok.com/@...">
-          </div>
-
-          <div class="form-group">
-            <label>URL Facebook</label>
-            <input type="url" id="vFacebook" class="admin-input" placeholder="https://facebook.com/...">
-          </div>
-
-          <div class="form-group">
-            <label>URL Miniature</label>
-            <input type="url" id="vThumbnail" class="admin-input" placeholder="https://img.youtube.com/vi/ID/hqdefault.jpg">
-          </div>
-
-          <div class="form-group">
-            <label>Nombre de vues</label>
-            <input type="text" id="vViews" class="admin-input" placeholder="ex: 96.7K ou 1.2M ou 850">
-          </div>
-
-          <div class="form-group">
-            <label>Date de publication</label>
-            <input type="date" id="vDate" class="admin-input">
-          </div>
-
-          <div class="form-group full-width">
-            <label>Tags (séparés par des virgules)</label>
-            <input type="text" id="vTags" class="admin-input" placeholder="python, débutant, tutoriel">
-          </div>
+          <div class="form-group"><label>URL YouTube</label><input type="url" id="vYoutube" class="admin-input" placeholder="https://youtube.com/watch?v=..."></div>
+          <div class="form-group"><label>URL TikTok</label><input type="url" id="vTiktok" class="admin-input" placeholder="https://tiktok.com/@..."></div>
+          <div class="form-group"><label>URL Facebook</label><input type="url" id="vFacebook" class="admin-input" placeholder="https://facebook.com/..."></div>
+          <div class="form-group"><label>URL Miniature</label><input type="url" id="vThumbnail" class="admin-input" placeholder="https://img.youtube.com/vi/ID/hqdefault.jpg"></div>
+          <div class="form-group"><label>Nombre de vues</label><input type="text" id="vViews" class="admin-input" placeholder="ex: 96.7K"></div>
+          <div class="form-group"><label>Date de publication</label><input type="date" id="vDate" class="admin-input"></div>
+          <div class="form-group full-width"><label>Tags (séparés par des virgules)</label><input type="text" id="vTags" class="admin-input" placeholder="android, sécurité, débutant"></div>
         </div>
-
         <p class="form-feedback" id="formFeedback"></p>
-
         <div class="form-actions">
           <button type="button" class="btn-cancel" onclick="resetForm()">🔄 Réinitialiser</button>
           <button type="submit" class="btn-save" id="saveBtn">💾 Enregistrer</button>
@@ -228,13 +169,61 @@
       </form>
     </div>
 
-    <!-- ── TAB : MESSAGES ── -->
-    <div class="admin-tab" id="tab-messages">
+    <!-- ── TAB : NOTES & IDÉES ── -->
+    <div class="admin-tab" id="tab-notes">
       <div class="tab-header">
-        <h2 class="tab-title">✉️ Messages reçus</h2>
+        <h2 class="tab-title">📝 Notes & Idées de tutoriels</h2>
+        <button class="btn-add" onclick="addNote()">+ Nouvelle note</button>
       </div>
-      <div id="messagesList" class="messages-list">
-        <p class="empty-state">Chargement des messages...</p>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:24px">Notez vos idées de tutoriels, rappels et tâches. Sauvegardé automatiquement dans votre navigateur.</p>
+      <div id="notesList" class="notes-grid"></div>
+    </div>
+
+    <!-- ── TAB : PLANNING ── -->
+    <div class="admin-tab" id="tab-planning">
+      <div class="tab-header">
+        <h2 class="tab-title">📅 Planning des tutoriels</h2>
+        <button class="btn-add" onclick="addPlanItem()">+ Ajouter</button>
+      </div>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:24px">Planifiez vos prochains tutoriels à publier.</p>
+      <div id="planningList" class="planning-list"></div>
+    </div>
+
+    <!-- ── TAB : ANNONCES ── -->
+    <div class="admin-tab" id="tab-annonces">
+      <div class="tab-header">
+        <h2 class="tab-title">📢 Bandeau d'annonce</h2>
+      </div>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:24px">Gérez le bandeau d'annonce affiché en haut de votre site.</p>
+      <div class="annonce-card">
+        <div class="form-group" style="margin-bottom:16px">
+          <label style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <input type="checkbox" id="annonceActive" style="width:18px;height:18px;accent-color:var(--accent)">
+            <span>Activer le bandeau d'annonce</span>
+          </label>
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>Texte de l'annonce</label>
+          <input type="text" id="annonceText" class="admin-input" placeholder="🆕 Nouveau tutoriel disponible ! Sécuriser Android en 2026">
+        </div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>Lien (optionnel)</label>
+          <input type="url" id="annonceLink" class="admin-input" placeholder="https://informa-technique.fr/#videos">
+        </div>
+        <div class="form-group" style="margin-bottom:20px">
+          <label>Couleur</label>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+            <button onclick="setAnnonceColor('linear-gradient(90deg,#00c8ff,#0066ff)')" style="background:linear-gradient(90deg,#00c8ff,#0066ff);border:none;border-radius:8px;padding:8px 18px;color:#fff;cursor:pointer;font-size:13px">Bleu</button>
+            <button onclick="setAnnonceColor('linear-gradient(90deg,#7c3aed,#00c8ff)')" style="background:linear-gradient(90deg,#7c3aed,#00c8ff);border:none;border-radius:8px;padding:8px 18px;color:#fff;cursor:pointer;font-size:13px">Violet</button>
+            <button onclick="setAnnonceColor('linear-gradient(90deg,#00c864,#00c8ff)')" style="background:linear-gradient(90deg,#00c864,#00c8ff);border:none;border-radius:8px;padding:8px 18px;color:#fff;cursor:pointer;font-size:13px">Vert</button>
+            <button onclick="setAnnonceColor('linear-gradient(90deg,#f59e0b,#ff6432)')" style="background:linear-gradient(90deg,#f59e0b,#ff6432);border:none;border-radius:8px;padding:8px 18px;color:#fff;cursor:pointer;font-size:13px">Orange</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn-save" onclick="saveAnnonce()">💾 Enregistrer l'annonce</button>
+          <button class="btn-cancel" onclick="previewAnnonce()">👁 Prévisualiser</button>
+        </div>
+        <div id="annoncePreview" style="display:none;margin-top:20px;border-radius:10px;padding:12px 20px;text-align:center;font-size:14px;font-weight:600;color:#fff"></div>
       </div>
     </div>
 
@@ -244,15 +233,68 @@
         <h2 class="tab-title">📊 Statistiques</h2>
       </div>
       <div id="statsGrid" class="stats-grid"></div>
-
       <div class="stats-section">
-        <h3>Répartition par catégorie</h3>
+        <h3>📂 Répartition par catégorie</h3>
         <div id="categoryProgress" class="progress-list"></div>
       </div>
-
       <div class="stats-section">
-        <h3>Répartition par plateforme</h3>
+        <h3>📺 Répartition par plateforme</h3>
         <div id="platformProgress" class="progress-list"></div>
+      </div>
+    </div>
+
+    <!-- ── TAB : LIENS RAPIDES ── -->
+    <div class="admin-tab" id="tab-liens">
+      <div class="tab-header">
+        <h2 class="tab-title">🔗 Liens rapides</h2>
+      </div>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:28px">Accédez rapidement à vos outils de gestion.</p>
+      <div class="liens-grid">
+        <a href="https://adsense.google.com" target="_blank" rel="noopener" class="lien-card lc-green">
+          <div class="lc-icon">💰</div>
+          <div class="lc-name">Google AdSense</div>
+          <div class="lc-desc">Revenus publicitaires</div>
+        </a>
+        <a href="https://search.google.com/search-console" target="_blank" rel="noopener" class="lien-card lc-blue">
+          <div class="lc-icon">🔍</div>
+          <div class="lc-name">Search Console</div>
+          <div class="lc-desc">Indexation & SEO</div>
+        </a>
+        <a href="https://studio.youtube.com" target="_blank" rel="noopener" class="lien-card lc-red">
+          <div class="lc-icon">▶️</div>
+          <div class="lc-name">YouTube Studio</div>
+          <div class="lc-desc">Gestion des vidéos YT</div>
+        </a>
+        <a href="https://www.facebook.com/InformaTech188" target="_blank" rel="noopener" class="lien-card lc-fb">
+          <div class="lc-icon">📘</div>
+          <div class="lc-name">Page Facebook</div>
+          <div class="lc-desc">InformaTech188</div>
+        </a>
+        <a href="https://www.tiktok.com/@informa_tech188" target="_blank" rel="noopener" class="lien-card lc-tt">
+          <div class="lc-icon">🎵</div>
+          <div class="lc-name">TikTok</div>
+          <div class="lc-desc">@informa_tech188</div>
+        </a>
+        <a href="https://analytics.google.com" target="_blank" rel="noopener" class="lien-card lc-orange">
+          <div class="lc-icon">📈</div>
+          <div class="lc-name">Google Analytics</div>
+          <div class="lc-desc">Trafic & audience</div>
+        </a>
+        <a href="https://www.ovh.com/manager" target="_blank" rel="noopener" class="lien-card lc-purple">
+          <div class="lc-icon">🌐</div>
+          <div class="lc-name">OVH Manager</div>
+          <div class="lc-desc">DNS & domaine</div>
+        </a>
+        <a href="https://github.com/HR60-inf/hr60-inf.github.io" target="_blank" rel="noopener" class="lien-card lc-dark">
+          <div class="lc-icon">⚙️</div>
+          <div class="lc-name">GitHub</div>
+          <div class="lc-desc">Code source du site</div>
+        </a>
+        <a href="https://web3forms.com/dashboard" target="_blank" rel="noopener" class="lien-card lc-teal">
+          <div class="lc-icon">✉️</div>
+          <div class="lc-name">Web3Forms</div>
+          <div class="lc-desc">Messages de contact</div>
+        </a>
       </div>
     </div>
 
