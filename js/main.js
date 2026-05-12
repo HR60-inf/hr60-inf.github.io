@@ -484,7 +484,40 @@ function isValidEmail(email) {
 /* ══════════════════════════════════════════
    INITIALISATION
 ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   BANDEAU D'ANNONCE
+══════════════════════════════════════════ */
+function initBandeau() {
+  try {
+    const data = JSON.parse(localStorage.getItem('itr_annonce'));
+    if (!data || !data.active || !data.text) return;
+
+    const bandeau = document.getElementById('siteBandeau');
+    if (!bandeau) return;
+
+    bandeau.style.background = data.color || 'linear-gradient(90deg,#00c8ff,#0066ff)';
+    bandeau.style.display    = 'block';
+
+    if (data.link) {
+      bandeau.innerHTML = `<a href="${data.link}" style="color:#fff;text-decoration:none">
+        ${data.text} <span style="opacity:0.8;font-size:12px">→</span>
+      </a>`;
+    } else {
+      bandeau.textContent = data.text;
+    }
+
+    // Décaler la nav pour ne pas cacher le bandeau
+    requestAnimationFrame(() => {
+      const nav = document.getElementById('mainNav');
+      if (nav) nav.style.top = bandeau.offsetHeight + 'px';
+    });
+  } catch {}
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+  // Afficher le bandeau d'annonce si activé
+  initBandeau();
+
   // Charger les vidéos depuis data/videos.json
   try {
     const res = await fetch('data/videos.json?t=' + Date.now());
