@@ -515,15 +515,31 @@ function setAnnonceColor(gradient) {
 }
 
 function saveAnnonce() {
-  const text   = document.getElementById('annonceText').value.trim();
-  const link   = document.getElementById('annonceLink').value.trim();
-  const active = document.getElementById('annonceActive').checked;
+  const text       = document.getElementById('annonceText').value.trim();
+  const link       = document.getElementById('annonceLink').value.trim();
+  const active     = document.getElementById('annonceActive').checked;
+  const dateDebut  = document.getElementById('annonceDateDebut').value;
+  const dateFin    = document.getElementById('annonceDateFin').value;
 
   if (!text) { showToast('⚠️ Entrez un texte pour l\'annonce', 'error'); return; }
 
-  const data = { text, link, active, color: annonceColor };
+  const data = { text, link, active, color: annonceColor, dateDebut, dateFin };
   localStorage.setItem(LS_ANNONCE, JSON.stringify(data));
   showToast('✅ Annonce enregistrée !', 'success');
+  updateAnnonceStatut(data);
+}
+
+function clearAnnonce() {
+  if (!confirm('Supprimer le bandeau d\'annonce ?')) return;
+  localStorage.removeItem(LS_ANNONCE);
+  document.getElementById('annonceText').value   = '';
+  document.getElementById('annonceLink').value   = '';
+  document.getElementById('annonceDateDebut').value = '';
+  document.getElementById('annonceDateFin').value   = '';
+  document.getElementById('annonceActive').checked  = false;
+  document.getElementById('annonceStatut').style.display = 'none';
+  document.getElementById('annoncePreview').style.display = 'none';
+  showToast('🗑️ Bandeau supprimé', 'success');
 }
 
 function previewAnnonce() {
@@ -540,14 +556,55 @@ function previewAnnonce() {
     : escHTML(text);
 }
 
+function updateAnnonceStatut(data) {
+  const statut = document.getElementById('annonceStatut');
+  if (!statut || !data) return;
+
+  const today      = new Date(); today.setHours(0,0,0,0);
+  const dateDebut  = data.dateDebut ? new Date(data.dateDebut) : null;
+  const dateFin    = data.dateFin   ? new Date(data.dateFin)   : null;
+
+  let html  = '';
+  let style = '';
+
+  if (!data.active) {
+    html  = '⏸ Bandeau désactivé — il ne s\'affiche pas sur le site';
+    style = 'background:rgba(139,163,199,0.1);border:1px solid rgba(139,163,199,0.2);color:var(--muted)';
+  } else if (dateFin && dateFin < today) {
+    html  = '✅ Déjà publié — bandeau expiré le ' + formatDateFR(dateFin);
+    style = 'background:rgba(0,200,100,0.1);border:1px solid rgba(0,200,100,0.2);color:var(--green)';
+  } else if (dateDebut && dateDebut > today) {
+    const jours = Math.ceil((dateDebut - today) / 86400000);
+    html  = '⏳ Programmé — publication dans ' + jours + ' jour' + (jours > 1 ? 's' : '') + ' (' + formatDateFR(dateDebut) + ')';
+    style = 'background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);color:var(--yellow)';
+  } else if (dateDebut && Math.abs(dateDebut - today) < 86400000) {
+    html  = '🟢 En ligne aujourd\'hui' + (dateFin ? ' — jusqu\'au ' + formatDateFR(dateFin) : '');
+    style = 'background:rgba(0,200,100,0.1);border:1px solid rgba(0,200,100,0.2);color:var(--green)';
+  } else {
+    html  = '🟢 En ligne' + (dateFin ? ' — jusqu\'au ' + formatDateFR(dateFin) : ' — pas de date de fin');
+    style = 'background:rgba(0,200,100,0.1);border:1px solid rgba(0,200,100,0.2);color:var(--green)';
+  }
+
+  statut.style.cssText = style + ';display:block;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600';
+  statut.innerHTML     = html;
+}
+
+function formatDateFR(date) {
+  if (!date) return '';
+  return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
 function loadAnnonceForm() {
   try {
     const data = JSON.parse(localStorage.getItem(LS_ANNONCE));
     if (!data) return;
-    document.getElementById('annonceText').value   = data.text || '';
-    document.getElementById('annonceLink').value   = data.link || '';
-    document.getElementById('annonceActive').checked = !!data.active;
+    document.getElementById('annonceText').value      = data.text || '';
+    document.getElementById('annonceLink').value      = data.link || '';
+    document.getElementById('annonceActive').checked  = !!data.active;
+    document.getElementById('annonceDateDebut').value = data.dateDebut || '';
+    document.getElementById('annonceDateFin').value   = data.dateFin   || '';
     if (data.color) annonceColor = data.color;
+    updateAnnonceStatut(data);
   } catch {}
 }
 

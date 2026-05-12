@@ -210,6 +210,23 @@
           <label>Lien (optionnel)</label>
           <input type="url" id="annonceLink" class="admin-input" placeholder="https://informa-technique.fr/#videos">
         </div>
+        <!-- Dates -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="form-group">
+            <label>📅 Date de publication</label>
+            <input type="date" id="annonceDateDebut" class="admin-input">
+            <small style="color:var(--muted);font-size:11px;margin-top:4px">Laisser vide = afficher immédiatement</small>
+          </div>
+          <div class="form-group">
+            <label>⏹ Date de fin (optionnel)</label>
+            <input type="date" id="annonceDateFin" class="admin-input">
+            <small style="color:var(--muted);font-size:11px;margin-top:4px">Le bandeau disparaît automatiquement</small>
+          </div>
+        </div>
+
+        <!-- Statut dynamique -->
+        <div id="annonceStatut" style="display:none;margin-bottom:16px;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600"></div>
+
         <div class="form-group" style="margin-bottom:20px">
           <label>Couleur</label>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
@@ -219,9 +236,10 @@
             <button onclick="setAnnonceColor('linear-gradient(90deg,#f59e0b,#ff6432)')" style="background:linear-gradient(90deg,#f59e0b,#ff6432);border:none;border-radius:8px;padding:8px 18px;color:#fff;cursor:pointer;font-size:13px">Orange</button>
           </div>
         </div>
-        <div style="display:flex;gap:12px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
           <button class="btn-save" onclick="saveAnnonce()">💾 Enregistrer l'annonce</button>
           <button class="btn-cancel" onclick="previewAnnonce()">👁 Prévisualiser</button>
+          <button class="btn-cancel" onclick="clearAnnonce()" style="color:var(--red);border-color:rgba(255,68,68,0.3)">🗑️ Supprimer</button>
         </div>
         <div id="annoncePreview" style="display:none;margin-top:20px;border-radius:10px;padding:12px 20px;text-align:center;font-size:14px;font-weight:600;color:#fff"></div>
       </div>
