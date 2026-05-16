@@ -24,69 +24,52 @@
 
 /* ── BANNIÈRE DE COUVERTURE ── */
 .site-banner-wrap {
-  position: relative;
   width: 100%;
   margin-top: 70px;
   background: #090e1a;
-  padding-bottom: 56px; /* espace pour la barre profil */
 }
 
+/* Image de bannière — hauteur réduite, centrée */
 .site-banner-img {
   width: 100%;
-  height: auto;        /* hauteur naturelle = jamais coupée */
+  height: 180px;
+  object-fit: cover;
+  object-position: center center;
   display: block;
 }
 
-.site-banner-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  bottom: 56px;
-  background: linear-gradient(to bottom, rgba(9,14,26,0.05) 0%, rgba(9,14,26,0.45) 100%);
-  pointer-events: none;
-}
+.site-banner-overlay { display: none; }
 
-/* Barre en bas de la bannière (fond sombre) */
+/* Barre profil : avatar + nom côte à côte */
 .site-banner-profile {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 56px;
-  background: #090e1a;
   display: flex;
   align-items: center;
-  padding: 0 5%;
   gap: 14px;
+  padding: 10px 5%;
+  background: #090e1a;
+  border-bottom: 1px solid rgba(0,200,255,0.08);
 }
 
-/* Avatar positionné DANS la bannière, au-dessus de la barre */
 .site-banner-avatar {
-  position: absolute;
-  bottom: 8px; /* au-dessus du bas de la barre */
-  left: 5%;
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  border: 3px solid #090e1a;
+  border: 2px solid rgba(0,200,255,0.35);
   object-fit: cover;
-  object-position: center;
+  flex-shrink: 0;
   background: #0d1525;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
-  z-index: 2;
 }
 
 .site-banner-info {
-  margin-left: calc(5% + 90px + 14px); /* décaler après l'avatar */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  height: 100%;
 }
 
 .site-banner-name {
   font-family: var(--font-head);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
   color: #fff;
-  line-height: 1.2;
 }
 
 .site-banner-desc {
@@ -2290,13 +2273,10 @@ button.pay-crypto:hover { border-color: #f7931a; }
 
 @media (max-width: 768px) {
   .hero-title { white-space: normal; font-size: clamp(1.6rem, 5.5vw, 2.2rem); }
-  .site-banner-img { height: 130px; }
-  .site-banner-overlay { height: 130px; }
-  .site-banner-wrap { padding-bottom: 48px; }
-  .site-banner-avatar { width: 68px; height: 68px; left: 4%; }
+  .site-banner-img { height: 110px; }
+  .site-banner-avatar { width: 54px; height: 54px; }
   .site-banner-name { font-size: 14px; }
-  .site-banner-info { margin-left: calc(4% + 68px + 12px); }
-  .site-banner-profile { height: 48px; padding: 0 4%; }
+  .site-banner-profile { padding: 8px 4%; gap: 10px; }
 }
 
 /* ════════════════════════════════════════════
