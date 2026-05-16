@@ -489,10 +489,12 @@ function isValidEmail(email) {
 ══════════════════════════════════════════ */
 function initBandeau() {
   try {
-    const data = JSON.parse(localStorage.getItem('itr_annonce'));
+    const raw = localStorage.getItem('itr_annonce');
+    if (!raw) return;
+    const data = JSON.parse(raw);
     if (!data || !data.active || !data.text) return;
 
-    // Parse date locale (évite le décalage UTC qui bloque l'affichage)
+    // Parse en heure locale pour éviter le décalage UTC
     function parseDate(str) {
       if (!str) return null;
       const [y, m, d] = str.split('-').map(Number);
@@ -505,32 +507,31 @@ function initBandeau() {
     const dateDebut = parseDate(data.dateDebut);
     const dateFin   = parseDate(data.dateFin);
 
-    if (dateDebut && dateDebut > today) return; // pas encore le moment
-    if (dateFin   && dateFin   < today) return; // bandeau expiré
+    if (dateDebut && dateDebut > today) return;
+    if (dateFin   && dateFin   < today) return;
 
     const bandeau = document.getElementById('siteBandeau');
     if (!bandeau) return;
 
-    bandeau.style.background = data.color || 'linear-gradient(90deg,#00c8ff,#0066ff)';
-    bandeau.style.display    = 'block';
+    // Appliquer la couleur de fond
+    bandeau.style.background = data.color || 'linear-gradient(135deg,#0066ff,#00c8ff)';
 
+    // Remplir le texte
+    const textEl = bandeau.querySelector('.bandeau-text');
+    if (textEl) textEl.textContent = data.text;
+
+    // Rendre cliquable si lien
     if (data.link) {
       const href = data.link.startsWith('http') ? data.link : 'https://' + data.link;
-      bandeau.innerHTML = `<a href="${href}" style="color:#fff;text-decoration:none">
-        ${data.text} <span style="opacity:0.8;font-size:12px">→</span>
-      </a>`;
-    } else {
-      bandeau.textContent = data.text;
+      bandeau.style.cursor = 'pointer';
+      bandeau.onclick = (e) => {
+        if (!e.target.classList.contains('bandeau-close')) {
+          window.open(href, '_blank');
+        }
+      };
     }
 
-    // Décaler la nav pour ne pas cacher le bandeau
-    requestAnimationFrame(() => {
-      const nav = document.getElementById('mainNav');
-      if (nav) nav.style.top = bandeau.offsetHeight + 'px';
-      // Décaler aussi la bannière de couverture
-      const banner = document.querySelector('.site-banner-wrap');
-      if (banner) banner.style.marginTop = (70 + bandeau.offsetHeight) + 'px';
-    });
+    bandeau.style.display = 'flex';
   } catch(e) { console.error('initBandeau:', e); }
 }
 
