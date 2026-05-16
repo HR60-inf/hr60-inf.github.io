@@ -26,38 +26,52 @@
 .site-banner-wrap {
   width: 100%;
   margin-top: 70px; /* pousse sous la nav fixe */
-  background: #090e1a;
+  background: #0d1525;
+  display: flex;
+  flex-direction: column;
+  font-size: 0;      /* supprime tout espace résiduel entre éléments inline/block */
+  line-height: 0;
 }
 
 .site-banner-img {
   width: 100%;
-  height: auto;       /* hauteur naturelle = image complète, rien coupé */
+  height: auto;       /* image complète, rien coupé */
   display: block;
   max-width: 100%;
+  line-height: 0;
+  vertical-align: bottom;
 }
 
 .site-banner-overlay { display: none; }
 
-/* Barre profil : fond sombre, avatar + nom */
+/* Barre profil : fond sombre, avatar chevauchant la bannière + nom */
 .site-banner-profile {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 5%;
+  align-items: flex-end;   /* aligne au bas pour que l'avatar dépasse en haut */
+  gap: 14px;
+  padding: 0 5% 10px;
   background: #0d1525;
   border-bottom: 1px solid rgba(0,200,255,0.1);
+  font-size: 16px;          /* rétablir après font-size:0 du parent */
+  line-height: 1.6;
 }
 
 .site-banner-avatar {
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
-  border: 2px solid rgba(0,200,255,0.4);
+  border: 3px solid #0d1525;   /* même couleur que le fond = effet découpe propre */
+  outline: 2px solid rgba(0,200,255,0.35);
   object-fit: cover;
   flex-shrink: 0;
+  margin-top: -36px;           /* remonte de moitié → chevauche la bannière */
 }
 
-.site-banner-info { display: flex; flex-direction: column; }
+.site-banner-info {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
 
 .site-banner-name {
   font-family: var(--font-head);
