@@ -492,6 +492,14 @@ function initBandeau() {
     const data = JSON.parse(localStorage.getItem('itr_annonce'));
     if (!data || !data.active || !data.text) return;
 
+    // Vérifier les dates
+    const today     = new Date(); today.setHours(0,0,0,0);
+    const dateDebut = data.dateDebut ? new Date(data.dateDebut) : null;
+    const dateFin   = data.dateFin   ? new Date(data.dateFin)   : null;
+
+    if (dateDebut && dateDebut > today) return; // pas encore le moment
+    if (dateFin   && dateFin   < today) return; // bandeau expiré
+
     const bandeau = document.getElementById('siteBandeau');
     if (!bandeau) return;
 
@@ -499,7 +507,8 @@ function initBandeau() {
     bandeau.style.display    = 'block';
 
     if (data.link) {
-      bandeau.innerHTML = `<a href="${data.link}" style="color:#fff;text-decoration:none">
+      const href = data.link.startsWith('http') ? data.link : 'https://' + data.link;
+      bandeau.innerHTML = `<a href="${href}" style="color:#fff;text-decoration:none">
         ${data.text} <span style="opacity:0.8;font-size:12px">→</span>
       </a>`;
     } else {
