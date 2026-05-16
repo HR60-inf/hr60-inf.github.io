@@ -25,14 +25,13 @@
 /* ── BANNIÈRE DE COUVERTURE ── */
 .site-banner-wrap {
   width: 100%;
-  margin-top: 70px;
+  margin-top: 70px; /* pousse sous la nav fixe */
   background: #090e1a;
 }
 
-/* Image de bannière — hauteur réduite, centrée */
 .site-banner-img {
   width: 100%;
-  height: 180px;
+  height: 150px;       /* bannière compacte */
   object-fit: cover;
   object-position: center center;
   display: block;
@@ -40,42 +39,38 @@
 
 .site-banner-overlay { display: none; }
 
-/* Barre profil : avatar + nom côte à côte */
+/* Barre profil : fond sombre, avatar + nom */
 .site-banner-profile {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 10px 5%;
-  background: #090e1a;
-  border-bottom: 1px solid rgba(0,200,255,0.08);
+  gap: 12px;
+  padding: 8px 5%;
+  background: #0d1525;
+  border-bottom: 1px solid rgba(0,200,255,0.1);
 }
 
 .site-banner-avatar {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  border: 2px solid rgba(0,200,255,0.35);
+  border: 2px solid rgba(0,200,255,0.4);
   object-fit: cover;
   flex-shrink: 0;
-  background: #0d1525;
 }
 
-.site-banner-info {
-  display: flex;
-  flex-direction: column;
-}
+.site-banner-info { display: flex; flex-direction: column; }
 
 .site-banner-name {
   font-family: var(--font-head);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: #fff;
 }
 
 .site-banner-desc {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 /* ── RESET & BASE ── */
@@ -2273,10 +2268,10 @@ button.pay-crypto:hover { border-color: #f7931a; }
 
 @media (max-width: 768px) {
   .hero-title { white-space: normal; font-size: clamp(1.6rem, 5.5vw, 2.2rem); }
-  .site-banner-img { height: 110px; }
-  .site-banner-avatar { width: 54px; height: 54px; }
-  .site-banner-name { font-size: 14px; }
-  .site-banner-profile { padding: 8px 4%; gap: 10px; }
+  .site-banner-img { height: 90px; }
+  .site-banner-avatar { width: 46px; height: 46px; }
+  .site-banner-name { font-size: 13px; }
+  .site-banner-profile { padding: 6px 4%; gap: 8px; }
 }
 
 /* ════════════════════════════════════════════
