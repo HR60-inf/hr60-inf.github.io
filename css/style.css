@@ -33,16 +33,14 @@
 
 .site-banner-img {
   width: 100%;
-  height: 250px;
-  object-fit: cover;
-  object-position: center 35%;
+  height: auto;        /* hauteur naturelle = jamais coupée */
   display: block;
 }
 
 .site-banner-overlay {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 250px;
+  bottom: 56px;
   background: linear-gradient(to bottom, rgba(9,14,26,0.05) 0%, rgba(9,14,26,0.45) 100%);
   pointer-events: none;
 }
