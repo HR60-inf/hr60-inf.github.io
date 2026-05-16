@@ -22,71 +22,62 @@
   --font-body: 'Inter', sans-serif;
 }
 
-/* ── BANDEAU D'ANNONCE (petit widget flottant) ── */
+/* ── WIDGET ANNONCE ── */
 #siteBandeau {
+  display: none;
   position: fixed;
   bottom: 90px;
   left: 20px;
-  z-index: 500;
-  display: flex;
+  z-index: 9999;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px 10px 14px;
+  gap: 10px;
+  padding: 11px 16px;
   border-radius: 50px;
-  box-shadow: 0 4px 24px rgba(0, 200, 255, 0.35), 0 0 0 1px rgba(0,200,255,0.2);
-  max-width: 300px;
+  max-width: 320px;
   cursor: pointer;
-  animation: bandeauSlide 0.5s cubic-bezier(.22,1,.36,1) forwards;
-  text-decoration: none;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  animation: bSlide 0.5s ease forwards;
 }
-
-@keyframes bandeauSlide {
-  from { transform: translateX(-120px); opacity: 0; }
+@keyframes bSlide {
+  from { transform: translateX(-140px); opacity: 0; }
   to   { transform: translateX(0);      opacity: 1; }
 }
-
 .bandeau-arrow {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 900;
   color: #fff;
-  line-height: 1;
-  animation: bandeauPulse 1.4s ease-in-out infinite;
   flex-shrink: 0;
+  animation: bPulse 1.5s ease-in-out infinite;
 }
-
-@keyframes bandeauPulse {
-  0%, 100% { transform: translateX(0); }
-  50%       { transform: translateX(5px); }
+@keyframes bPulse {
+  0%,100% { transform: translateX(0); }
+  50%     { transform: translateX(6px); }
 }
-
 .bandeau-text {
   font-family: var(--font-head);
   font-size: 13px;
   font-weight: 600;
   color: #fff;
-  line-height: 1.3;
   flex: 1;
+  line-height: 1.3;
 }
-
 .bandeau-close {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.25);
   border: none;
   color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  width: 20px;
-  height: 20px;
+  font-size: 15px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  line-height: 1;
   padding: 0;
   transition: background 0.2s;
 }
-.bandeau-close:hover { background: rgba(255,255,255,0.4); }
+.bandeau-close:hover { background: rgba(255,255,255,0.45); }
 
 /* ── BANNIÈRE DE COUVERTURE ── */
 .site-banner-wrap {
