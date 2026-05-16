@@ -487,58 +487,46 @@ function isValidEmail(email) {
 /* ══════════════════════════════════════════
    BANDEAU D'ANNONCE
 ══════════════════════════════════════════ */
+
 function initBandeau() {
   try {
     const raw = localStorage.getItem('itr_annonce');
     if (!raw) return;
     const data = JSON.parse(raw);
-    if (!data || !data.active || !data.text) return;
+    if (!data || !data.text) return;
+    if (data.active === false) return;
 
-    // Parse en heure locale pour éviter le décalage UTC
-    function parseDate(str) {
-      if (!str) return null;
-      const [y, m, d] = str.split('-').map(Number);
-      const dt = new Date(y, m - 1, d);
-      dt.setHours(0, 0, 0, 0);
-      return dt;
+    // Vérification dates en heure locale
+    const today = new Date(); today.setHours(0,0,0,0);
+    if (data.dateDebut) {
+      const [y,m,d] = data.dateDebut.split('-').map(Number);
+      const debut = new Date(y, m-1, d);
+      if (debut > today) return;
+    }
+    if (data.dateFin) {
+      const [y,m,d] = data.dateFin.split('-').map(Number);
+      const fin = new Date(y, m-1, d);
+      if (fin < today) return;
     }
 
-    const today     = new Date(); today.setHours(0, 0, 0, 0);
-    const dateDebut = parseDate(data.dateDebut);
-    const dateFin   = parseDate(data.dateFin);
+    const el = document.getElementById('siteBandeau');
+    if (!el) return;
 
-    if (dateDebut && dateDebut > today) return;
-    if (dateFin   && dateFin   < today) return;
+    el.style.background = data.color || 'linear-gradient(135deg,#0066ff,#00c8ff)';
+    el.querySelector('.bandeau-text').textContent = data.text;
+    el.style.display = 'flex';
 
-    const bandeau = document.getElementById('siteBandeau');
-    if (!bandeau) return;
-
-    // Appliquer la couleur de fond
-    bandeau.style.background = data.color || 'linear-gradient(135deg,#0066ff,#00c8ff)';
-
-    // Remplir le texte
-    const textEl = bandeau.querySelector('.bandeau-text');
-    if (textEl) textEl.textContent = data.text;
-
-    // Rendre cliquable si lien
     if (data.link) {
       const href = data.link.startsWith('http') ? data.link : 'https://' + data.link;
-      bandeau.style.cursor = 'pointer';
-      bandeau.onclick = (e) => {
-        if (!e.target.classList.contains('bandeau-close')) {
-          window.open(href, '_blank');
-        }
-      };
+      el.addEventListener('click', function(e) {
+        if (!e.target.classList.contains('bandeau-close')) window.open(href, '_blank');
+      });
     }
-
-    bandeau.style.display = 'flex';
-  } catch(e) { console.error('initBandeau:', e); }
+  } catch(e) {}
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Afficher le bandeau d'annonce si activé
   initBandeau();
-
   // Charger les vidéos depuis data/videos.json
   try {
     const res = await fetch('data/videos.json?t=' + Date.now());
