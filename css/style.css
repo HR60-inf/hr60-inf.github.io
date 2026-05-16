@@ -25,52 +25,49 @@
 /* ── BANNIÈRE DE COUVERTURE ── */
 .site-banner-wrap {
   width: 100%;
-  margin-top: 70px; /* pousse sous la nav fixe */
-  background: #0d1525;
-  display: flex;
-  flex-direction: column;
-  font-size: 0;      /* supprime tout espace résiduel entre éléments inline/block */
-  line-height: 0;
+  margin-top: 70px;   /* colle juste sous la nav fixe (70px) */
+  background: none;   /* PAS de fond → aucun espace noir possible */
+  overflow: visible;
 }
 
 .site-banner-img {
   width: 100%;
-  height: auto;       /* image complète, rien coupé */
-  display: block;
+  height: auto;        /* image complète, proportion naturelle, rien coupé */
+  display: block;      /* supprime l'espace inline-block du bas */
   max-width: 100%;
-  line-height: 0;
-  vertical-align: bottom;
+  margin: 0;
+  padding: 0;
 }
 
 .site-banner-overlay { display: none; }
 
-/* Barre profil : fond sombre, avatar chevauchant la bannière + nom */
+/* ── Barre profil avec avatar qui chevauche la bannière ── */
 .site-banner-profile {
+  position: relative;          /* ancre l'avatar absolu */
   display: flex;
-  align-items: flex-end;   /* aligne au bas pour que l'avatar dépasse en haut */
+  align-items: center;
   gap: 14px;
-  padding: 0 5% 10px;
+  padding: 12px 5% 10px calc(5% + 88px); /* laisse la place à l'avatar absolu */
   background: #0d1525;
   border-bottom: 1px solid rgba(0,200,255,0.1);
-  font-size: 16px;          /* rétablir après font-size:0 du parent */
-  line-height: 1.6;
 }
 
+/* Avatar positionné en absolu → monte dans la bannière */
 .site-banner-avatar {
-  width: 72px;
-  height: 72px;
+  position: absolute;
+  left: 5%;
+  top: -40px;          /* remonte de 40px au-dessus de la barre → chevauche l'image */
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  border: 3px solid #0d1525;   /* même couleur que le fond = effet découpe propre */
-  outline: 2px solid rgba(0,200,255,0.35);
+  border: 3px solid #0d1525;  /* bord couleur fond = découpe nette */
+  outline: 2px solid rgba(0,200,255,0.4);
   object-fit: cover;
-  flex-shrink: 0;
-  margin-top: -36px;           /* remonte de moitié → chevauche la bannière */
 }
 
 .site-banner-info {
   display: flex;
   flex-direction: column;
-  padding-bottom: 2px;
 }
 
 .site-banner-name {
