@@ -75,7 +75,7 @@
   <!-- ══ FONTS & STYLES ══ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=16">
+  <link rel="stylesheet" href="css/style.css?v=17">
   <link rel="stylesheet" href="css/animations.css">
 
   <!-- ══ GOOGLE ADSENSE ══ -->
@@ -87,7 +87,11 @@
 <!-- ══════════════════════════════════════════
      BANDEAU D'ANNONCE (géré depuis l'admin)
 ══════════════════════════════════════════ -->
-<div id="siteBandeau" style="display:none;padding:10px 20px;text-align:center;font-size:14px;font-weight:600;color:#fff;position:fixed;top:0;left:0;right:0;z-index:200;transition:opacity 0.3s"></div>
+<div id="siteBandeau" style="display:none;">
+  <span class="bandeau-arrow">&#8250;</span>
+  <span class="bandeau-text"></span>
+  <button class="bandeau-close" onclick="document.getElementById('siteBandeau').style.display='none'" title="Fermer">&times;</button>
+</div>
 
 <!-- ══════════════════════════════════════════
      NAVIGATION
