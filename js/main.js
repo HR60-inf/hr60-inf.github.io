@@ -492,10 +492,18 @@ function initBandeau() {
     const data = JSON.parse(localStorage.getItem('itr_annonce'));
     if (!data || !data.active || !data.text) return;
 
-    // Vérifier les dates
-    const today     = new Date(); today.setHours(0,0,0,0);
-    const dateDebut = data.dateDebut ? new Date(data.dateDebut) : null;
-    const dateFin   = data.dateFin   ? new Date(data.dateFin)   : null;
+    // Parse date locale (évite le décalage UTC qui bloque l'affichage)
+    function parseDate(str) {
+      if (!str) return null;
+      const [y, m, d] = str.split('-').map(Number);
+      const dt = new Date(y, m - 1, d);
+      dt.setHours(0, 0, 0, 0);
+      return dt;
+    }
+
+    const today     = new Date(); today.setHours(0, 0, 0, 0);
+    const dateDebut = parseDate(data.dateDebut);
+    const dateFin   = parseDate(data.dateFin);
 
     if (dateDebut && dateDebut > today) return; // pas encore le moment
     if (dateFin   && dateFin   < today) return; // bandeau expiré
@@ -519,8 +527,11 @@ function initBandeau() {
     requestAnimationFrame(() => {
       const nav = document.getElementById('mainNav');
       if (nav) nav.style.top = bandeau.offsetHeight + 'px';
+      // Décaler aussi la bannière de couverture
+      const banner = document.querySelector('.site-banner-wrap');
+      if (banner) banner.style.marginTop = (70 + bandeau.offsetHeight) + 'px';
     });
-  } catch {}
+  } catch(e) { console.error('initBandeau:', e); }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
