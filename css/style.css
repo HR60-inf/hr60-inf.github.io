@@ -24,63 +24,67 @@
 
 /* ── BANNIÈRE DE COUVERTURE ── */
 .site-banner-wrap {
+  position: relative;
   width: 100%;
-  margin-top: 70px;   /* colle juste sous la nav fixe (70px) */
-  background: none;   /* PAS de fond → aucun espace noir possible */
-  overflow: visible;
+  margin-top: 70px; /* hauteur de la nav */
+  background: #090e1a;
 }
 
 .site-banner-img {
   width: 100%;
-  height: auto;        /* image complète, proportion naturelle, rien coupé */
-  display: block;      /* supprime l'espace inline-block du bas */
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+  height: 220px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
-.site-banner-overlay { display: none; }
+.site-banner-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 220px;
+  background: linear-gradient(
+    to bottom,
+    rgba(9,14,26,0.1) 0%,
+    rgba(9,14,26,0.55) 100%
+  );
+  pointer-events: none;
+}
 
-/* ── Barre profil avec avatar qui chevauche la bannière ── */
 .site-banner-profile {
-  position: relative;          /* ancre l'avatar absolu */
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 5% 10px calc(5% + 88px); /* laisse la place à l'avatar absolu */
-  background: #0d1525;
-  border-bottom: 1px solid rgba(0,200,255,0.1);
+  gap: 16px;
+  padding: 14px 5% 16px;
+  background: #090e1a;
 }
 
-/* Avatar positionné en absolu → monte dans la bannière */
 .site-banner-avatar {
-  position: absolute;
-  left: 5%;
-  top: -40px;          /* remonte de 40px au-dessus de la barre → chevauche l'image */
-  width: 80px;
-  height: 80px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
-  border: 3px solid #0d1525;  /* bord couleur fond = découpe nette */
-  outline: 2px solid rgba(0,200,255,0.4);
+  border: 3px solid rgba(0,200,255,0.4);
   object-fit: cover;
+  background: #0d1525;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  flex-shrink: 0;
+  margin-top: -30px; /* fait remonter la photo sur la bannière */
 }
 
 .site-banner-info {
-  display: flex;
-  flex-direction: column;
+  padding-top: 4px;
 }
 
 .site-banner-name {
   font-family: var(--font-head);
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
   color: #fff;
 }
 
 .site-banner-desc {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 /* ── RESET & BASE ── */
@@ -102,8 +106,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
 }
 
 /* Grille de fond subtile */
@@ -2280,10 +2282,11 @@ button.pay-crypto:hover { border-color: #f7931a; }
 
 @media (max-width: 768px) {
   .hero-title { white-space: normal; font-size: clamp(1.6rem, 5.5vw, 2.2rem); }
-  .site-banner-img { height: 90px; }
-  .site-banner-avatar { width: 46px; height: 46px; }
-  .site-banner-name { font-size: 13px; }
-  .site-banner-profile { padding: 6px 4%; gap: 8px; }
+  .site-banner-img { height: 130px; }
+  .site-banner-overlay { height: 130px; }
+  .site-banner-avatar { width: 64px; height: 64px; margin-top: -22px; }
+  .site-banner-name { font-size: 15px; }
+  .site-banner-profile { padding: 10px 4% 12px; gap: 12px; }
 }
 
 /* ════════════════════════════════════════════
